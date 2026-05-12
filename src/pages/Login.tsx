@@ -7,7 +7,8 @@ const Login = () => {
 
       <Typography variant="h1" >This text has poppins</Typography>
 
-      <Button variant="contained" color="primary"> Primary burtton</Button>
+      <Button variant="outlined" color="primary">Cancelar</Button>
+      <Button variant="contained" color="primary">Publicar</Button>
 
     </div>
   )
