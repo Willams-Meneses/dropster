@@ -46,78 +46,87 @@ const theme = createTheme({
     fontWeightRegular: 400,
     fontWeightMedium: 500,
     fontWeightBold: 700,
+
     h1: {
-      fontSize: '2.25rem',     // ~36px
-      fontWeight: 700,
-      lineHeight: 1.2,
-      letterSpacing: '-0.01em',
+      fontSize: '32px',
+      fontWeight: 600,
+      lineHeight: '48px',
+      color: colors.content.heading,
     },
     h2: {
-      fontSize: '1.75rem',     // ~28px
-      fontWeight: 700,
-      lineHeight: 1.25,
-      letterSpacing: '-0.005em',
+      fontSize: '24px',
+      fontWeight: 600,
+      lineHeight: '36px',
+      color: colors.content.heading,
     },
     h3: {
-      fontSize: '1.5rem',      // ~24px
+      fontSize: '20px',
       fontWeight: 600,
-      lineHeight: 1.3,
+      lineHeight: '30px',
+      color: colors.content.heading,
     },
     h4: {
-      fontSize: '1.25rem',     // ~20px
+      fontSize: '18px',
       fontWeight: 600,
-      lineHeight: 1.35,
+      lineHeight: '27px',
+      color: colors.content.heading,
     },
     h5: {
-      fontSize: '1.125rem',    // ~18px
+      fontSize: '16px',
       fontWeight: 600,
-      lineHeight: 1.4,
+      lineHeight: '24px',
+      color: colors.content.heading,
     },
     h6: {
-      fontSize: '1rem',        // ~16px
+      fontSize: '14px',
       fontWeight: 600,
-      lineHeight: 1.4,
+      lineHeight: '21px',
+      color: colors.content.heading,
     },
     subtitle1: {
-      fontSize: '1rem',
-      fontWeight: 500,
-      lineHeight: 1.5,
+      fontSize: '12px',
+      fontWeight: 600,
+      lineHeight: '18px',
+      color: colors.content.strong,
     },
     subtitle2: {
-      fontSize: '0.875rem',    // ~14px
-      fontWeight: 500,
-      lineHeight: 1.5,
+      fontSize: '12px',
+      fontWeight: 400,
+      lineHeight: '18px',
+      color: colors.content.strong,
     },
     body1: {
-      fontSize: '0.875rem',    // ~14px
+      fontSize: '16px',
       fontWeight: 400,
-      lineHeight: 1.6,
+      lineHeight: '24px',
+      color: colors.content.body,
     },
     body2: {
-      fontSize: '0.8125rem',   // ~13px
+      fontSize: '10px',
       fontWeight: 400,
-      lineHeight: 1.6,
+      lineHeight: '16px',
+      color: colors.content.strong,
     },
     caption: {
-      fontSize: '0.75rem',     // ~12px
+      fontSize: '9px',
       fontWeight: 400,
-      lineHeight: 1.5,
+      lineHeight: '14.4px',
+      color: colors.content.muted,
     },
     overline: {
-      fontSize: '0.6875rem',   // ~11px
+      fontSize: '12px',
       fontWeight: 600,
-      letterSpacing: '0.08em',
-      textTransform: 'uppercase',
-      lineHeight: 1.5,
+      lineHeight: '18px',
+      textTransform: 'uppercase' as const,
+      color: colors.content.heading,
     },
     button: {
-      fontSize: '14px',   // ~15px
+      fontSize: '16px',
       fontWeight: 500,
-      textTransform: 'none',   // Droppers NO usa uppercase en botones
-      lineHeight: '21px',
+      lineHeight: '24px',
+      textTransform: 'none' as const,
     },
   },
-
 
   shape: {
     borderRadius: 8,
@@ -141,7 +150,7 @@ const theme = createTheme({
           '&.MuiButton-containedPrimary:hover': {
             backgroundColor: colors.brand.orangeDark,
           },
-         
+
           '&.MuiButton-outlinedPrimary': {
             borderColor: colors.brand.orange,
             color: colors.brand.orange,

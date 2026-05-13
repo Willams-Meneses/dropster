@@ -1,8 +1,8 @@
 export const colors = {
   brand: {
-    orange: '#FF6739',
-    orangeLight: '#FF8A66',
-    orangeDark: '#CC4A1A',
+    orange: '#F15A22',
+    orangeLight: '#FF7A47',
+    orangeDark: '#C44010',
   },
   green: {
     main: '#4CAF50',
@@ -29,6 +29,13 @@ export const colors = {
     success: '#4CAF50',
     warning: '#FFA726',
     error: '#F44336',
+  },
+  // Colores semánticos de typography
+  content: {
+    heading: '#353535',
+    strong: '#171717',
+    body: '#565656',
+    muted: '#797979',
   },
   white: '#FFFFFF',
 } as const;
