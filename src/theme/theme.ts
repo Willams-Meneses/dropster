@@ -266,9 +266,9 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           fontSize: '13px',
-        },
-        error: {
-          fontSize: '13px',
+          '&.Mui-error': {
+            fontSize: '13px',
+          },
         },
       },
     },
