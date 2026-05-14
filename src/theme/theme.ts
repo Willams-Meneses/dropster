@@ -98,7 +98,7 @@ const theme = createTheme({
     body1: {
       fontSize: '16px',
       fontWeight: 400,
-      lineHeight: '24px',
+      lineHeight: '21px',
       color: colors.content.body,
     },
     body2: {
@@ -176,17 +176,25 @@ const theme = createTheme({
     MuiTextField: {
       defaultProps: {
         variant: 'outlined',
-        size: 'small',
+        size: 'medium',   // cambiado a medium para que matchee el alto de Figma
       },
       styleOverrides: {
         root: {
           '& .MuiOutlinedInput-root': {
-            borderRadius: 8,
+            borderRadius: '12px',
+            backgroundColor: colors.white,
+            height: '40px',
             '& fieldset': {
-              borderColor: colors.neutral[300],
+              borderWidth: '0.5px',
+              borderColor: '#565656',
             },
             '&:hover fieldset': {
-              borderColor: colors.neutral[400],
+              borderWidth: '0.5px',
+              borderColor: colors.brand.orange,
+            },
+            '&.Mui-focused fieldset': {
+              borderWidth: '0.5px',
+              borderColor: colors.brand.orange,
             },
           },
         },
@@ -196,14 +204,23 @@ const theme = createTheme({
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
+          borderRadius: '12px',
+          backgroundColor: colors.white,
           '& fieldset': {
-            borderColor: colors.neutral[300],
+            borderWidth: '0.5px',
+            borderColor: '#565656',
+          },
+          '&:hover fieldset': {
+            borderWidth: '0.5px',
+            borderColor: colors.brand.orange,
+          },
+          '&.Mui-focused fieldset': {
+            borderWidth: '0.5px',
+            borderColor: colors.brand.orange,
           },
         },
       },
     },
-
     MuiCard: {
       styleOverrides: {
         root: {
@@ -218,6 +235,40 @@ const theme = createTheme({
         root: {
           borderRadius: 20,
           fontWeight: 500,
+        },
+      },
+    },
+
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          padding: 0,
+          '& .MuiSvgIcon-root': {
+            display: 'none',
+          },
+          width: 24,
+          height: 24,
+          borderRadius: '6px',
+          border: `2px solid ${colors.neutral[400]}`,
+          backgroundColor: colors.white,
+          '&.Mui-checked': {
+            backgroundColor: colors.brand.orange,
+            borderColor: colors.brand.orange,
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z' fill='white'/%3E%3C/svg%3E")`,
+            backgroundSize: '18px',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+          },
+        },
+      },
+    },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          fontSize: '13px',
+        },
+        error: {
+          fontSize: '13px',
         },
       },
     },
