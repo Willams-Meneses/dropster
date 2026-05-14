@@ -4,8 +4,8 @@ import AuthLayout from '@/layouts/AuthLayout';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import { useAuthStore } from '@/store/auth.store';
-import RegisterRoleSelection from './pages/RoleSelection';
 import ProtectedRoute from './components/ui/ProtectedRoute';
+import RoleSelection from './pages/RoleSelection';
 
 // Placeholder para rutas protegidas — reemplazá con tus páginas reales
 const Dashboard = () => <div>Dashboard</div>;
@@ -29,7 +29,7 @@ function App() {
         <Route path="/register" element={<Register />} />
       </Route>
 
-      <Route path="/select-role" element={<RegisterRoleSelection />} />
+      <Route path="/select-role" element={<RoleSelection />} />
 
       {/* Rutas protegidas */}
       {/* TODO: El protectedRoute es un layout de rutas que protege las rutas hijas y se encarga de redireccionar al dashboard si cumple con los
