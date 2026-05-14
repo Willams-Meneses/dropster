@@ -1,4 +1,3 @@
-import { Role } from '@/types/auth.types';
 import { z } from 'zod';
 
 export const loginSchema = z.object({
@@ -21,7 +20,6 @@ export const registerSchema = z
       .string()
       .min(6, 'La contraseña debe tener al menos 6 caracteres'),
     confirmPassword: z.string().min(1, 'Repetí la contraseña'),
-    role: z.enum([Role.PROVIDER, Role.DROPSHIPPER]),
     terms: z.literal(true, {
       error: 'Debés aceptar los términos y condiciones'
     }),

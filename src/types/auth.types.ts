@@ -8,7 +8,7 @@ export type Role = typeof Role[keyof typeof Role];
 export interface User {
   id: string;
   email: string;
-  role: Role;
+  role: Role | null;
   firstName: string;
   lastName: string;
   mercadopagoId: string | null;
@@ -25,7 +25,7 @@ export interface LoginResponse {
     email: string;
     firstName: string;
     lastName: string;
-    role: Role;
+    role: Role | null;
   };
 }
 
@@ -39,5 +39,16 @@ export interface RegisterPayload {
   password: string;
   firstName: string;
   lastName: string;
-  role: Role;
+}
+
+export interface UpdateUserPayload {
+  role?: Role;
+}
+export interface UpdateMeResponse {
+  accessToken: string;
+  user: {
+    id: string;
+    email: string;
+    role: Role;
+  };
 }
