@@ -1,14 +1,13 @@
 import { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import AuthLayout from '@/layouts/AuthLayout';
-import Login from '@/pages/Login';
-import Register from '@/pages/Register';
 import { useAuthStore } from '@/store/auth.store';
 import ProtectedRoute from './components/ui/ProtectedRoute';
-import RoleSelection from './pages/RoleSelection';
-
-// Placeholder para rutas protegidas — reemplazá con tus páginas reales
-const Dashboard = () => <div>Dashboard</div>;
+import DashboardLayout from './layouts/DashboardLayout';
+import RoleSelectionPage from './pages/RoleSelectionPage';
+import RegisterPage from './pages/RegisterPage';
+import LoginPage from './pages/LoginPage';
+import ProductsPage from './pages/ProductsPage';
 
 // Rutas públicas que no necesitan token
 const PUBLIC_ROUTES = ['/login', '/register', '/forgot-password'];
@@ -25,11 +24,11 @@ function App() {
     <Routes>
       {/* Rutas públicas — auth */}
       <Route element={<AuthLayout />}>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
       </Route>
 
-      <Route path="/select-role" element={<RoleSelection />} />
+      <Route path="/select-role" element={<RoleSelectionPage />} />
 
       {/* Rutas protegidas */}
       {/* TODO: El protectedRoute es un layout de rutas que protege las rutas hijas y se encarga de redireccionar al dashboard si cumple con los
@@ -37,7 +36,11 @@ function App() {
       ya no se redirecciona al dashboard de eso se encarga protectedRoute */}
       <Route element={<ProtectedRoute />}>
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        {/* <Route path="/dashboard" element={<DashboardLayout />} /> */}
+        <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route index element={<ProductsPage />} />
+          
+        </Route>
       </Route>
 
       {/* Fallback */}

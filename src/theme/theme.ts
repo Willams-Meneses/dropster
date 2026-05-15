@@ -108,7 +108,7 @@ const theme = createTheme({
       color: colors.content.strong,
     },
     caption: {
-      fontSize: '9px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: '14.4px',
       color: colors.content.muted,
@@ -275,6 +275,11 @@ const theme = createTheme({
 
     MuiCssBaseline: {
       styleOverrides: {
+        html: {
+          WebkitFontSmoothing: 'antialiased',
+          MozOsxFontSmoothing: 'grayscale',
+          textRendering: 'optimizeLegibility',
+        },
         body: {
           backgroundColor: colors.white,
           color: colors.text.primary,
