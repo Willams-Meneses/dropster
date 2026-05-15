@@ -17,7 +17,7 @@ import { Controller } from 'react-hook-form';
 import { useRegister } from '@/hooks/useRegister';
 import { BackButton } from '@/components/ui/buttons/BackButton';
 
-const Register = () => {
+const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const { form, onSubmitStep1, isSubmitting, serverError, setServerError } = useRegister();
@@ -271,4 +271,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterPage;

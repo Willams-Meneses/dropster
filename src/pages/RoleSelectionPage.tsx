@@ -5,7 +5,7 @@ import dropshipperImg from '@/assets/svg/dropshipper-role-auth.svg';
 import providerImg from '@/assets/svg/provider-role-auth.svg';
 import backgroundImg from '@/assets/svg/background-select-role-auth.svg';
 
-const RoleSelection = () => {
+const RoleSelectionPage = () => {
   const { selectedRole, setSelectedRole, serverError, isSubmittingRole, onSubmitRole, Role } = useRegister();
 
   return (
@@ -82,4 +82,4 @@ const RoleSelection = () => {
   );
 };
 
-export default RoleSelection;
+export default RoleSelectionPage;

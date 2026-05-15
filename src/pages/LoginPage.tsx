@@ -15,7 +15,7 @@ import { Controller } from 'react-hook-form';
 import { useLogin } from '@/hooks/useLogin';
 import { BackButton } from '@/components/ui/buttons/BackButton';
 
-const Login = () => {
+const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { form, onSubmit, serverError, setServerError, isSubmitting } = useLogin();
   const { control, formState: { errors, isValid } } = form;
@@ -151,4 +151,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;
