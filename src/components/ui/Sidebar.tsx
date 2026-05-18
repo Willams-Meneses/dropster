@@ -27,6 +27,7 @@ import { ChartIcon } from '../icons/ChartIcon';
 import { CashRegisterIcon } from '../icons/CashRegisterIcon';
 import { OrdersIcon } from '../icons/OrdersIcon';
 import { RefundIcon } from '../icons/RefundIcon';
+import { PublishIcon } from '../icons/PublishIcon';
 
 export const SIDEBAR_WIDTH = 252;
 
@@ -44,18 +45,18 @@ interface NavSection {
 const NAV_DROPSHIPPER: NavSection = {
   section: 'Dropshipper',
   items: [
-    { label: 'Mis tiendas', path: '/dashboard/mis-tiendas', icon: <ShopIcon /> },
-    { label: 'Pedidos', path: '/dashboard/pedidos', icon: <OrdersIcon /> },
-    { label: 'Devoluciones', path: '/dashboard/devoluciones', icon: <RefundIcon /> },
+    { label: 'Mis tiendas', path: '/dashboard/mis-tiendas', icon: <ShopIcon size={15} color='currentColor' /> },
+    { label: 'Pedidos', path: '/dashboard/pedidos', icon: <OrdersIcon size={15} color='currentColor' /> },
+    { label: 'Devoluciones', path: '/dashboard/devoluciones', icon: <RefundIcon size={15} color='currentColor' /> },
   ],
 };
 
 const NAV_PROVIDER: NavSection = {
   section: 'Proveedor',
   items: [
-    { label: 'Mis publicaciones', path: '/dashboard/mis-publicaciones', icon: <ShopIcon /> },
-    { label: 'Resumen', path: '/dashboard/resumen', icon: <ChartIcon /> },
-    { label: 'Mis ventas', path: '/dashboard/mis-ventas', icon: <CashRegisterIcon /> },
+    { label: 'Mis publicaciones', path: '/dashboard/my-listings', icon: <PublishIcon size={15} color='currentColor' /> },
+    { label: 'Resumen', path: '/dashboard/resumen', icon: <ChartIcon size={15} color='currentColor' /> },
+    { label: 'Mis ventas', path: '/dashboard/mis-ventas', icon: <CashRegisterIcon size={15} color='currentColor' /> },
   ],
 };
 
@@ -102,7 +103,6 @@ const Sidebar = () => {
     >
       {/* Logo */}
       <Box sx={{ px: 3, pt: 3, pb: 2 }}>
-        {/* Reemplazá con tu SVG: import droppersLogo from '@/assets/svg/droppers-logo.svg' */}
         <Typography
           sx={{
             fontSize: '20px',
@@ -115,8 +115,6 @@ const Sidebar = () => {
           DROPPERS
         </Typography>
       </Box>
-
-      {/* <Divider /> */}
 
       {/* User card */}
       <Box sx={{ px: 2, py: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.5, borderRadius: '16px', border: '0.5px solid', borderColor: 'divider' }}>
@@ -208,12 +206,13 @@ const Sidebar = () => {
           sx={{
             mx: 1,
             borderRadius: '8px',
+            pl: 1.5,
             backgroundColor: isActive('/dashboard') ? `${colors.brand.orange}18` : 'transparent',
             '&:hover': { backgroundColor: `${colors.brand.orange}10` },
           }}
         >
-          <ListItemIcon sx={{ minWidth: 32 }}>
-            <GridView fontSize="small" sx={{ color: isActive('/dashboard') ? colors.brand.orange : colors.content.muted }} />
+          <ListItemIcon sx={{ minWidth: 32, }}>
+            <GridView fontSize="small" sx={{ color: isActive('/dashboard') ? colors.brand.orange : colors.content.muted, fontSize: '14px' }} />
           </ListItemIcon>
           <ListItemText
             primary="Productos"
@@ -264,13 +263,29 @@ const Sidebar = () => {
                     sx={{
                       mx: 1,
                       borderRadius: '8px',
-                      pl: 2,
+                      px: 0,
+                      pl: '10px',
                       backgroundColor: isActive(item.path) ? `${colors.brand.orange}18` : 'transparent',
                       '&:hover': { backgroundColor: `${colors.brand.orange}10` },
                     }}
                   >
-                    <ListItemIcon sx={{ minWidth: 32 }}>
-                      <Box sx={{ color: isActive(item.path) ? colors.brand.orange : colors.content.muted }}>
+                    <ListItemIcon sx={{
+                      minWidth: 32,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'flex-start',
+                      mx: 0,
+                      color: isActive(item.path) ? colors.brand.orange : colors.content.muted,
+                    }}>
+                      <Box sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        lineHeight: 0, // Elimina espacio extra por line-height
+                        '& svg': {
+                          display: 'block' // Elimina espacio inline de SVG
+                        },
+                      }}>
                         {item.icon}
                       </Box>
                     </ListItemIcon>

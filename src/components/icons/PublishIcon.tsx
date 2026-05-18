@@ -1,23 +1,27 @@
-export function PublishIcon({ className = "w-4 h-4" }: { className?: string }) {
+interface IconProps {
+  size?: number;
+  color?: string;
+}
+
+export function PublishIcon({ size = 14, color = 'currentColor' }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="14"
-      height="14"
+      width={size}
+      height={size}
       viewBox="0 0 14 14"
       fill="none"
-      className={className}
     >
       <path
         d="M2.31547 7.56547C2.23358 7.48348 2.18755 7.37236 2.1875 7.25648V2.1875H7.25648C7.37236 2.18755 7.48348 2.23358 7.56547 2.31547L12.997 7.74703C13.079 7.82907 13.1251 7.94031 13.1251 8.05629C13.1251 8.17227 13.079 8.28351 12.997 8.36555L8.36719 12.997C8.28515 13.079 8.17391 13.1251 8.05793 13.1251C7.94195 13.1251 7.83071 13.079 7.74867 12.997L2.31547 7.56547Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M4.59375 5.03125C4.83537 5.03125 5.03125 4.83537 5.03125 4.59375C5.03125 4.35213 4.83537 4.15625 4.59375 4.15625C4.35213 4.15625 4.15625 4.35213 4.15625 4.59375C4.15625 4.83537 4.35213 5.03125 4.59375 5.03125Z"
-        fill="currentColor"
+        fill={color}
       />
     </svg>
   );
