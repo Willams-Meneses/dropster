@@ -8,6 +8,7 @@ import RoleSelectionPage from './pages/RoleSelectionPage';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import ProductsPage from './pages/ProductsPage';
+import MyListingsPage from './pages/MyListingsPage';
 
 // Rutas públicas que no necesitan token
 const PUBLIC_ROUTES = ['/login', '/register', '/forgot-password'];
@@ -36,10 +37,9 @@ function App() {
       ya no se redirecciona al dashboard de eso se encarga protectedRoute */}
       <Route element={<ProtectedRoute />}>
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        {/* <Route path="/dashboard" element={<DashboardLayout />} /> */}
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<ProductsPage />} />
-          
+          <Route path="my-listings" element={<MyListingsPage />} />
         </Route>
       </Route>
 
