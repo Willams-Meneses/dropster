@@ -116,7 +116,8 @@ const CardProduct: React.FC<CardProductProps> = ({
           WebkitLineClamp: 2,
           WebkitBoxOrient: 'vertical',
           overflow: 'hidden',
-          lineHeight: '20px'
+          lineHeight: '20px',
+          minHeight: '40px',
         }}
       >
         {product.name}
