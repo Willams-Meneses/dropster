@@ -20,6 +20,7 @@ export interface ProductVariant {
   suggestedPrice: string;
   stock: number;
   reservedStock: number;
+  isActive: boolean;
 }
 
 export interface ProductProvider {
@@ -43,6 +44,8 @@ export interface ApiProduct {
   provider: ProductProvider;
   category: ProductCategory | null;
   variants: ProductVariant[];
+  isActive: boolean;   // ← agregar
+  updatedAt: string;
 }
 
 // ─── UI model (lo que espera CardProduct) ─────────────────────────────────────
