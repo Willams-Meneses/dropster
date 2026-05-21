@@ -23,6 +23,7 @@ interface ChipCustomProps {
   iconSize?: number;
   /** Estilos adicionales para el Box */
   sx?: SxProps<Theme>;
+  size?: 'large' | 'medium';
 }
 
 export const ChipCustom: React.FC<ChipCustomProps> = ({
@@ -34,18 +35,33 @@ export const ChipCustom: React.FC<ChipCustomProps> = ({
   icon: IconComponent,
   iconSize = 14,
   sx,
+  size = 'large',
 }) => {
-  
+
   // Construir estilos del borde
   const getBorderStyles = () => {
     if (!border) return {};
-    
+
     const borderValue = typeof border === 'string' ? border : '1px solid';
     const borderColorValue = borderColor || 'currentColor';
-    
+
     return {
       border: borderValue,
       borderColor: borderColorValue,
+    };
+  };
+
+  const getSizeStyles = () => {
+    if (size === 'medium') {
+      return {
+        px: '8px',
+        py: '4px',
+      };
+    }
+    // large (default)
+    return {
+      px: '6px',
+      py: '8px',
     };
   };
 
@@ -57,16 +73,15 @@ export const ChipCustom: React.FC<ChipCustomProps> = ({
         gap: 0.75,
         backgroundColor: backgroundColor,
         borderRadius: '100px',
-        px: '6px',
-        py: '8px',
         width: 'fit-content',
+        ...getSizeStyles(),
         ...getBorderStyles(),
         ...sx,
       }}
     >
       {IconComponent && (
-        <IconComponent 
-          size={iconSize} 
+        <IconComponent
+          size={iconSize}
           color={textColor}
         />
       )}
@@ -74,6 +89,7 @@ export const ChipCustom: React.FC<ChipCustomProps> = ({
         variant="subtitle1"
         sx={{
           color: textColor,
+          fontWeight: size === 'medium' ? 500 : undefined,
         }}
       >
         {label}
