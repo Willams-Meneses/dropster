@@ -5,7 +5,7 @@ export interface RouteConfig {
 
 export const routesConfig: Record<string, RouteConfig> = {
   '/dashboard': { title: 'Productos', showSearch: true },
-  '/dashboard/mis-tiendas': { title: 'Mis tiendas', showSearch: false },
+  '/dashboard/my-stores': { title: 'Mis tiendas', showSearch: false },
   '/dashboard/pedidos': { title: 'Pedidos', showSearch: false },
   '/dashboard/devoluciones': { title: 'Devoluciones', showSearch: false },
   '/dashboard/my-listings': { title: 'Mis Publicaciones', showSearch: false },
