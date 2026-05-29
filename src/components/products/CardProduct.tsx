@@ -11,6 +11,7 @@ import { ChipCustom } from '../ui/ChipCustom';
 import { PercentageIcon } from '../icons/PercentageIcon';
 import { colors } from '@/theme/palette';
 import { CARD_VARIANT, type CardVariant } from '@/types/product.type';
+import { useStoreOperations } from '@/hooks/useStoreOperations';
 
 interface CardProductProps {
   product: Product;
@@ -62,6 +63,11 @@ const CardProduct: React.FC<CardProductProps> = ({
 }) => {
   // const isFeatured = variant === 'featured';
   const isFeatured = variant === CARD_VARIANT.FEATURED;
+  const { addProduct, isLoading } = useStoreOperations(); // ✅ Usar hook
+
+  const handleAddToStore = () => {
+    addProduct(product.id); // ✅ Asumiendo que product tiene un 'id'
+  };
 
   // Badge dentro de imageSection, posicionado relativo a la imagen
   const imageSection = (
@@ -137,7 +143,7 @@ const CardProduct: React.FC<CardProductProps> = ({
 
       <ChipCustom
         label={`${product.profitPercentage}% de ganancia!`}
-        backgroundColor={variant === CARD_VARIANT.FEATURED? colors.green.main : 'rgba(52, 199, 89, 0.10)'}
+        backgroundColor={variant === CARD_VARIANT.FEATURED ? colors.green.main : 'rgba(52, 199, 89, 0.10)'}
         textColor={variant === CARD_VARIANT.FEATURED ? '#ffffff' : colors.green.main}
         icon={PercentageIcon}
         iconSize={14}
@@ -172,10 +178,13 @@ const CardProduct: React.FC<CardProductProps> = ({
         </Box>
       </Box>
 
-      <Button variant='contained' color='primary' sx={{
-        height: '40px'
-      }}>
-        Sumar a mi tienda
+      <Button variant='contained' color='primary'
+        onClick={handleAddToStore}
+        disabled={isLoading}
+        sx={{
+          height: '40px'
+        }}>
+        {isLoading ? 'Agregando...' : 'Sumar a mi tienda'}
       </Button>
     </Box>
   );

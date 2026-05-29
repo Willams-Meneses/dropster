@@ -1,5 +1,6 @@
 
 import api from '@/lib/axios';
+import type { StoreProductItem } from '@/types/store-product.type';
 import type { ConnectedStore, DropshipperStore } from '@/types/store.type';
 
 export const storeService = {
@@ -15,5 +16,22 @@ export const storeService = {
   getMyStore: async (): Promise<DropshipperStore> => {
     const { data } = await api.get<DropshipperStore>('/store');
     return data;
+  },
+
+  addProductToStore: async (productId: string): Promise<void> => {
+    await api.post('/store/products', { productId });
+  },
+
+  removeProductFromStore: async (tiendanubeProductId: string): Promise<void> => {
+    await api.delete(`/store/products/${tiendanubeProductId}`);
+  },
+
+  getStoreProducts: async (): Promise<StoreProductItem[]> => {
+    const { data } = await api.get<StoreProductItem[]>('/store/products');
+    return data;
+  },
+
+  updateSellPrice: async (dropshipperVariantId: string, sellPrice: string): Promise<void> => {
+    await api.patch(`/store/variants/${dropshipperVariantId}/sell-price`, { sellPrice });
   },
 };
