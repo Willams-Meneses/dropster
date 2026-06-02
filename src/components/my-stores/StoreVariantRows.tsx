@@ -47,7 +47,7 @@ export const StoreVariantRows: React.FC<StoreVariantRowsProps> = ({
           key={variant.dropshipperVariantId}
           sx={{
             display: 'grid',
-            gridTemplateColumns: '80px 120px 120px 120px 1fr auto',
+            gridTemplateColumns: '80px 120px 120px 1fr auto',
             alignItems: 'center',
             gap: 1,
           }}
@@ -57,9 +57,6 @@ export const StoreVariantRows: React.FC<StoreVariantRowsProps> = ({
 
           {/* Precio de costo — del proveedor, read-only */}
           <PriceInput value={variant.cost} disabled />
-
-          {/* Precio sugerido — del proveedor, read-only */}
-          <PriceInput value={variant.suggestedPrice} disabled />
 
           {/* Precio de venta — editable por el dropshipper */}
           <PriceInput

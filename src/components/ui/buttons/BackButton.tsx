@@ -10,7 +10,6 @@ export const BackButton = () => {
       startIcon={<ArrowBack />}
       onClick={() => { navigate(-1); }}
       sx={{
-        mb: 3,
         color: 'text.primary',
         border: '1px solid',
         borderColor: 'divider',

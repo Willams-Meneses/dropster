@@ -28,10 +28,10 @@ function buildColumns(
       key: 'variants',
       header: (
         // gridTemplateColumns debe ser idéntico al de StoreVariantRows
-        <Box sx={{ display: 'grid', gridTemplateColumns: '80px 120px 120px 120px 1fr auto', gap: 1 }}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: '80px 120px 120px 1fr auto', gap: 1 }}>
           <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>Stock</Typography>
-          <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>Precio</Typography>
-          <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>Precio sugerido</Typography>
+          <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>Costo</Typography>
+          {/* <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>Precio sugerido</Typography> */}
           <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>Precio de venta</Typography>
           <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>Variantes</Typography>
           <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>Acciones</Typography>

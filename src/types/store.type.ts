@@ -7,6 +7,9 @@ export interface DropshipperStore {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
+  storeName: string;
+  logoUrl: string;
+  logoPublicId: string;
 }
 
 // Lo que devuelve GET /store/tiendanube/callback (mismo shape que connectStore)

@@ -3,6 +3,7 @@ import { Search, ShoppingCart, Notifications } from '@mui/icons-material';
 import { useLocation } from 'react-router-dom';
 import { colors } from '@/theme/palette';
 import { routesConfig } from '@/config/routes.config';
+import { BackButton } from './buttons/BackButton';
 
 const TOPBAR_HEIGHT = 72;
 
@@ -17,8 +18,8 @@ const Topbar = () => {
         height: TOPBAR_HEIGHT,
         display: 'flex',
         alignItems: 'center',
-        pl:3,
-        pr:"25px",
+        pl: 3,
+        pr: "25px",
         gap: 2,
         backgroundColor: 'transparent',
         position: 'fixed',
@@ -28,6 +29,16 @@ const Topbar = () => {
         zIndex: 800,
       }}
     >
+      {/* Back button - solo se muestra si la ruta lo requiere en config */}
+      {config.showBackButton && (
+        <Box sx={{
+          display: 'flex',
+          alignContent: 'center',
+        }}>
+          <BackButton />
+        </Box>
+      )}
+
       {/* Page title */}
       <Typography
         variant="h5"

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 
 import { PageHeader } from '@/components/ui/PageHeader';
 import { FilterBar } from '@/components/ui/FilterBar';
@@ -74,8 +75,20 @@ const MyStoreDetailPage: React.FC = () => {
   return (
     <Box sx={{ px: 0, mt: 3 }}>
       <PageHeader
-        title="Mi Tienda"
-        description="Administrá los productos que tenés publicados en tu tienda Tiendanube."
+        title="Nombre de la tienda"
+        actions={
+          <>
+            <Button
+              variant="contained"
+              startIcon={<FileDownloadOutlinedIcon />}
+              sx={{
+                height: '40px'
+              }}
+            >
+              Descargar CSV
+            </Button>
+          </>
+        }
       />
 
       <StatusTabs
