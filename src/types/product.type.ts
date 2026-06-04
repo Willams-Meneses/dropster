@@ -63,3 +63,24 @@ export interface Product {
   category: string;
   isHighlighted?: boolean;
 }
+
+// ─── Create product ───────────────────────────────────────────────────────────
+ 
+export interface CreateProductImagePayload {
+  base64: string;
+  mimetype: string;
+}
+ 
+export interface CreateProductPayload {
+  name: string;
+  description?: string;
+  categoryId: string;
+  attributes: string[];
+  images: CreateProductImagePayload[];
+  variants: unknown[];
+}
+ 
+export interface CreateProductResponse {
+  id: string;
+  name: string;
+}
