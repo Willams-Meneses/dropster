@@ -1,11 +1,14 @@
 import { CategorySection } from '@/components/my-listings/create-product/CategorySection';
+import { PhotosSection } from '@/components/my-listings/create-product/PhotosSection';
 import { TagsSeoSection } from '@/components/my-listings/create-product/TagsSeoSection';
 import { TitleDescriptionSection } from '@/components/my-listings/create-product/TitleDescriptionSection';
 import { VariantsSection } from '@/components/my-listings/create-product/VariantsSection';
 import { ErrorMessage } from '@/components/ui/ErrorMessage';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { useCreateProduct } from '@/hooks/useCreateProduct';
+import type { ImagePreview } from '@/utils/imageUtils';
 import { Box, Button } from '@mui/material';
+import { useState } from 'react';
 
 
 const CreateProductPage = () => {
@@ -14,11 +17,19 @@ const CreateProductPage = () => {
     errors,
     isValid,
     nameValue,
+    handleImagesChange,
     onSubmit,
     serverError,
     setServerError,
     isSubmitting,
   } = useCreateProduct();
+
+  const [imagePreviews, setImagePreviews] = useState<ImagePreview[]>([]);
+
+  const onPhotosChange = (previews: ImagePreview[]) => {
+    setImagePreviews(previews);
+    handleImagesChange(previews);
+  };
 
   return (
     <Box>
@@ -47,6 +58,12 @@ const CreateProductPage = () => {
         />
 
         <CategorySection control={control} errors={errors} />
+        <PhotosSection
+          images={imagePreviews}
+          onChange={onPhotosChange}
+          // Pasá el error de Zod si querés mostrarlo bajo la sección:
+          error={errors.images?.message}
+        />
 
         <VariantsSection />
 

@@ -13,6 +13,7 @@ const initialFormData: Partial<CreateProductFormValues> = {
   name: '',
   description: '',
   categoryId: '',
+  images: [],
 };
 
 export const useProductFormStore = create<ProductFormState>((set) => ({

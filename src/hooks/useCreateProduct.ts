@@ -5,6 +5,7 @@ import axios from 'axios';
 import { createProductSchema, type CreateProductFormValues } from '@/schemas/product.schema';
 import { listingsService } from '@/services/listings.service';
 import { useProductFormStore } from '@/store/productForm.store';
+import { type ImagePreview } from '@/utils/imageUtils';
 
 export const useCreateProduct = () => {
   const navigate = useNavigate();
@@ -17,12 +18,30 @@ export const useCreateProduct = () => {
       name: '',
       description: '',
       categoryId: '',
+      images: [],
     },
   });
 
-  const { control, formState: { errors, isValid }, watch } = form;
+  const { control, formState: { errors, isValid }, watch, setValue } = form;
 
   const nameValue = watch('name');
+  const imagesValue = watch('images');
+
+  /**
+   * Called by PhotosSection whenever the user adds/removes photos.
+   * Converts ImagePreview[] → the plain payload shape that Zod validates,
+   * and stores the full previews in a ref so we can revoke URLs later.
+   */
+  const handleImagesChange = (previews: ImagePreview[]) => {
+    setValue(
+      'images',
+      previews.map((p) => ({ base64: p.base64, mimetype: p.mimetype })),
+      { shouldValidate: true, shouldDirty: true },
+    );
+    // Keep previews accessible for the section component via a separate state.
+    // Return them so the caller can store them locally.
+    return previews;
+  };
 
   const onSubmit = form.handleSubmit(async (values) => {
     setServerError(null);
@@ -32,7 +51,7 @@ export const useCreateProduct = () => {
         description: values.description ?? '',
         categoryId: values.categoryId,
         attributes: [],
-        images: [],
+        images: values.images,
         variants: [],
       };
       const product = await listingsService.create(payload);
@@ -53,6 +72,8 @@ export const useCreateProduct = () => {
     errors,
     isValid,
     nameValue,
+    imagesValue,
+    handleImagesChange,
     onSubmit,
     serverError,
     setServerError,
