@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { Box, Button, Card, CardContent, Typography } from '@mui/material';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import { useProductFormStore } from '@/store/productForm.store';
-import { PropertiesDrawer } from './variants/PropertiesDrawer';
-import { VariantsTable } from './variants/VariantsTable';
 import type { Property } from '@/types/variant.type';
+import { VariantsTable } from './VariantsTable';
+import { PropertiesDrawer } from './PropertiesDrawer';
 
 export const VariantsSection = () => {
   const [drawerOpen, setDrawerOpen]  = useState(false);

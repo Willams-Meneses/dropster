@@ -44,19 +44,42 @@ export const useCreateProduct = () => {
   };
 
   const onSubmit = form.handleSubmit(async (values) => {
+    const { properties, variants, productPhotos } = useProductFormStore.getState();
     setServerError(null);
     try {
+      // IDs de fotos asignadas a al menos una variante
+      const assignedBase64s = new Set(
+        variants.flatMap((v) => v.images.map((img) => img.base64))
+      );
+
+      // Solo las fotos del producto que NO están en ninguna variante
+      const unassignedImages = productPhotos
+        .filter((p) => !assignedBase64s.has(p.base64))
+        .map((p) => ({ base64: p.base64, mimetype: p.mimetype }));
+
       const payload = {
         name: values.name,
         description: values.description ?? '',
         categoryId: values.categoryId,
-        attributes: [],
-        images: values.images,
-        variants: [],
+        attributes: properties.map((p) => p.name), // ["Color", "Talle"]
+        images: unassignedImages,
+        variants: variants.map((v) => ({
+          values: v.values,
+          sku: v.sku,
+          cost: v.cost,
+          suggestedMargin: v.suggestedMargin,
+          suggestedPrice: v.suggestedPrice,
+          stock: v.stock,
+          weight: v.weight,
+          depth: v.depth,
+          width: v.width,
+          height: v.height,
+          images: v.images,
+        })),
       };
-      const product = await listingsService.create(payload);
+      await listingsService.create(payload);
       reset();
-      void navigate(`/dashboard/products/${product.id}`);
+      void navigate(`/dashboard/my-listings`);
     } catch (err: unknown) {
       if (axios.isAxiosError(err) && err.response?.status === 400) {
         setServerError('Revisá los datos ingresados e intentá de nuevo.');

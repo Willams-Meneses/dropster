@@ -6,6 +6,7 @@ import { VariantsSection } from '@/components/my-listings/create-product/Variant
 import { ErrorMessage } from '@/components/ui/ErrorMessage';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { useCreateProduct } from '@/hooks/useCreateProduct';
+import { useProductFormStore } from '@/store/productForm.store';
 import type { ImagePreview } from '@/utils/imageUtils';
 import { Box, Button } from '@mui/material';
 import { useState } from 'react';
@@ -25,10 +26,12 @@ const CreateProductPage = () => {
   } = useCreateProduct();
 
   const [imagePreviews, setImagePreviews] = useState<ImagePreview[]>([]);
+  const setProductPhotos = useProductFormStore((s) => s.setProductPhotos);
 
   const onPhotosChange = (previews: ImagePreview[]) => {
     setImagePreviews(previews);
     handleImagesChange(previews);
+    setProductPhotos(previews);
   };
 
   return (

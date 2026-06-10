@@ -105,7 +105,7 @@ export default function PhotosDrawer({ open, onClose, images, onChange }: Photos
     <GenericDrawer
       open={open}
       onClose={handleClose}
-      title="Fotos"
+      title={<Typography variant="h2">Fotos</Typography>}
       width={460}
       footer={footer}
       // Custom header action: "Eliminar Varias" toggle
