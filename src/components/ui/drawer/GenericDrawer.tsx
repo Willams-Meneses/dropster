@@ -1,14 +1,13 @@
 import Drawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import CloseIcon from '@mui/icons-material/Close';
 
 interface GenericDrawerProps {
   open: boolean;
   onClose: () => void;
-  title: string;
+  title: React.ReactNode;
   children: React.ReactNode;
   anchor?: 'left' | 'right' | 'top' | 'bottom';
   width?: number | string;
@@ -50,7 +49,7 @@ export default function GenericDrawer({
           py: 2.5,
         }}
       >
-        <Typography variant="h2">{title}</Typography>
+        {title}
         <IconButton onClick={onClose} size="small">
           <CloseIcon fontSize="small" />
         </IconButton>

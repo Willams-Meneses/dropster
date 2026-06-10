@@ -116,7 +116,7 @@ export default function AddStoreDrawer({ open, onClose, onSelectOption }: AddSto
     <GenericDrawer
       open={open}
       onClose={onClose}
-      title="Nueva tienda"
+      title={<Typography variant="h2">Nueva tienda</Typography>}
       width={420}
     >
       <Typography variant="body1" sx={{ mb: 3 }}>
