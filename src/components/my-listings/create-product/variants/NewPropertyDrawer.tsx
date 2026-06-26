@@ -1,15 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import {
-  Box,
-  Typography,
-  Select,
-  MenuItem,
-  IconButton,
-  Button,
-  TextField,
-  Radio,
-  Divider,
-  FormControl,
+  Box, Typography, Select, MenuItem, IconButton, Button,
+  TextField, Radio, Divider, FormControl,
 } from '@mui/material';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -21,6 +13,8 @@ import { COLOR_PRESETS, TALLE_PRESETS } from '@/types/variant.type';
 interface NewPropertyDrawerProps {
   open: boolean;
   initialType: PropertyType;
+  /** When editing an existing property, pass it here */
+  initialProperty?: Property;
   onClose: () => void;
   onCreate: (prop: Property) => void;
 }
@@ -34,12 +28,9 @@ interface ColorFormProps {
 
 const ColorForm: React.FC<ColorFormProps> = ({ selected, onChange }) => {
   const addCustom = () => onChange([...selected, { name: '', hex: '#000000' }]);
-
   const remove = (i: number) => onChange(selected.filter((_, idx) => idx !== i));
-
   const updateName = (i: number, name: string) =>
     onChange(selected.map((v, idx) => (idx === i ? { ...v, name } : v)));
-
   const togglePreset = (preset: ColorValue) => {
     const exists = selected.some((v) => v.name === preset.name);
     onChange(exists ? selected.filter((v) => v.name !== preset.name) : [...selected, preset]);
@@ -47,7 +38,6 @@ const ColorForm: React.FC<ColorFormProps> = ({ selected, onChange }) => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-      {/* Selected list */}
       {selected.length > 0 && (
         <Box>
           <Typography variant="h6" sx={{ mb: 0.5 }}>Colores seleccionados</Typography>
@@ -80,9 +70,8 @@ const ColorForm: React.FC<ColorFormProps> = ({ selected, onChange }) => {
 
       <Divider />
 
-      {/* Presets */}
       <Box>
-        <Typography variant="h6" sx={{ mb: 1.5 }}>Colores seleccionados</Typography>
+        <Typography variant="h6" sx={{ mb: 1.5 }}>Colores disponibles</Typography>
         {COLOR_PRESETS.map((preset) => {
           const isChecked = selected.some((v) => v.name === preset.name);
           return (
@@ -90,28 +79,17 @@ const ColorForm: React.FC<ColorFormProps> = ({ selected, onChange }) => {
               key={preset.name}
               onClick={() => togglePreset(preset)}
               sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                py: 1,
-                cursor: 'pointer',
-                '&:hover': { bgcolor: 'grey.100' },
-                borderRadius: 1,
-                px: 0.5,
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                py: 1, cursor: 'pointer', '&:hover': { bgcolor: 'grey.100' },
+                borderRadius: 1, px: 0.5,
               }}
             >
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <Box
-                  sx={{
-                    width: 24,
-                    height: 24,
-                    borderRadius: '50%',
-                    bgcolor: preset.hex,
-                    border: '1px solid',
-                    borderColor: preset.hex === '#FFFFFF' ? 'divider' : 'transparent',
-                    flexShrink: 0,
-                  }}
-                />
+                <Box sx={{
+                  width: 24, height: 24, borderRadius: '50%', bgcolor: preset.hex,
+                  border: '1px solid', borderColor: preset.hex === '#FFFFFF' ? 'divider' : 'transparent',
+                  flexShrink: 0,
+                }} />
                 <Typography variant="body1">{preset.name}</Typography>
               </Box>
               <Radio checked={isChecked} size="small" disableRipple sx={{ p: 0 }} />
@@ -132,17 +110,13 @@ interface TalleFormProps {
 
 const TalleForm: React.FC<TalleFormProps> = ({ selected, onChange }) => {
   const addCustom = () => onChange([...selected, '']);
-
   const remove = (i: number) => onChange(selected.filter((_, idx) => idx !== i));
-
   const updateVal = (i: number, val: string) =>
     onChange(selected.map((v, idx) => (idx === i ? val : v)));
-
   const togglePreset = (val: string) => {
     const exists = selected.includes(val);
     onChange(exists ? selected.filter((v) => v !== val) : [...selected, val]);
   };
-
   const selectAll = (group: string[]) => {
     const missing = group.filter((v) => !selected.includes(v));
     onChange([...selected, ...missing]);
@@ -185,29 +159,14 @@ const TalleForm: React.FC<TalleFormProps> = ({ selected, onChange }) => {
       {Object.entries(TALLE_PRESETS).map(([groupName, groupVals]) => (
         <Box key={groupName}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
-            <Typography variant="h6">{groupName === 'Adultos' ? 'Talles básicos' : ''}</Typography>
-            {groupName === 'Adultos' && (
-              <Box>
-                <Typography variant="h6" sx={{ mb: 0.5 }}>{groupName}</Typography>
-              </Box>
-            )}
-          </Box>
-          {groupName !== 'Adultos' && (
-            <Typography variant="h6" sx={{ mb: 0.5 }}>{groupName}</Typography>
-          )}
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              mb: 0.5,
-            }}
-          >
+            <Typography variant="h6">
+              {groupName === 'Adultos' ? 'Talles básicos' : groupName}
+            </Typography>
             {groupName === 'Adultos' && (
               <Button
                 size="small"
                 onClick={() => selectAll(groupVals)}
-                sx={{ px: 0, color: 'primary.main', fontWeight: 500, minWidth: 'auto', ml: 'auto' }}
+                sx={{ px: 0, color: 'primary.main', fontWeight: 500, minWidth: 'auto' }}
               >
                 Seleccionar todos
               </Button>
@@ -218,14 +177,9 @@ const TalleForm: React.FC<TalleFormProps> = ({ selected, onChange }) => {
               key={val}
               onClick={() => togglePreset(val)}
               sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                py: 1,
-                cursor: 'pointer',
-                '&:hover': { bgcolor: 'grey.100' },
-                borderRadius: 1,
-                px: 0.5,
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                py: 1, cursor: 'pointer', '&:hover': { bgcolor: 'grey.100' },
+                borderRadius: 1, px: 0.5,
               }}
             >
               <Typography variant="body1">{val}</Typography>
@@ -294,27 +248,32 @@ const LABELS: Record<PropertyType, string> = {
   modelo: 'Modelo',
 };
 
+function initialColorVals(prop?: Property): ColorValue[] {
+  if (prop?.type === 'color') return prop.values;
+  return [];
+}
+function initialTalleVals(prop?: Property): string[] {
+  if (prop?.type === 'talle') return prop.values;
+  return [];
+}
+function initialModeloVals(prop?: Property): string[] {
+  if (prop?.type === 'modelo') return prop.values;
+  return [];
+}
+
 export const NewPropertyDrawer: React.FC<NewPropertyDrawerProps> = ({
   open,
   initialType,
+  initialProperty,
   onClose,
   onCreate,
 }) => {
-  const [type, setType] = useState<PropertyType>(initialType);
-  const [colorVals, setColorVals] = useState<ColorValue[]>([]);
-  const [talleVals, setTalleVals] = useState<string[]>([]);
-  const [modeloVals, setModeloVals] = useState<string[]>([]);
+  const isEditing = !!initialProperty;
 
-  //TODO: ver esto para sirve
-  // Reset when drawer opens with a new type
-  // React.useEffect(() => {
-  //   if (open) {
-  //     setType(initialType);
-  //     setColorVals([]);
-  //     setTalleVals([]);
-  //     setModeloVals([]);
-  //   }
-  // }, [open, initialType]);
+  const [type, setType] = useState<PropertyType>(initialType);
+  const [colorVals, setColorVals] = useState<ColorValue[]>(() => initialColorVals(initialProperty));
+  const [talleVals, setTalleVals] = useState<string[]>(() => initialTalleVals(initialProperty));
+  const [modeloVals, setModeloVals] = useState<string[]>(() => initialModeloVals(initialProperty));
 
   const canCreate = useCallback(() => {
     if (type === 'color') return colorVals.length > 0 && colorVals.every((v) => v.name.trim());
@@ -334,24 +293,18 @@ export const NewPropertyDrawer: React.FC<NewPropertyDrawerProps> = ({
   };
 
   const header = (
-    <Box sx={{
-      display: 'flex',
-      justifyContent:'space-between',
-      width: '100%',
-      mr: 1
-    }}>
-      <Typography variant="h2">Nueva propiedad</Typography>
+    <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mr: 1 }}>
+      <Typography variant="h2">
+        {isEditing ? 'Editar propiedad' : 'Nueva propiedad'}
+      </Typography>
       <Button
         variant="contained"
         size="small"
         disabled={!canCreate()}
         onClick={handleCreate}
-        sx={{
-          px: '12px',
-          py: '4.8px'
-        }}
+        sx={{ px: '12px', py: '4.8px' }}
       >
-        Crear
+        {isEditing ? 'Guardar' : 'Crear'}
       </Button>
     </Box>
   );
@@ -360,18 +313,18 @@ export const NewPropertyDrawer: React.FC<NewPropertyDrawerProps> = ({
     <GenericDrawer
       open={open}
       onClose={onClose}
-      // title="Nueva Propiedad"
       title={header}
       width={420}
       footer={undefined}
     >
-      {/* Property type selector */}
+      {/* Property type selector — locked when editing */}
       <Box sx={{ mb: 3 }}>
         <Typography variant="subtitle1" sx={{ mb: 1 }}>Propiedad</Typography>
         <FormControl fullWidth>
           <Select
             value={type}
             onChange={(e) => setType(e.target.value as PropertyType)}
+            disabled={isEditing}
             sx={{ borderRadius: '12px' }}
           >
             {(Object.keys(LABELS) as PropertyType[]).map((t) => (
@@ -381,7 +334,6 @@ export const NewPropertyDrawer: React.FC<NewPropertyDrawerProps> = ({
         </FormControl>
       </Box>
 
-      {/* Sub-form */}
       {type === 'color' && <ColorForm selected={colorVals} onChange={setColorVals} />}
       {type === 'talle' && <TalleForm selected={talleVals} onChange={setTalleVals} />}
       {type === 'modelo' && <ModeloForm selected={modeloVals} onChange={setModeloVals} />}

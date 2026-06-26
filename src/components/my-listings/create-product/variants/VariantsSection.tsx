@@ -2,17 +2,14 @@ import { useState } from 'react';
 import { Box, Button, Card, CardContent, Typography } from '@mui/material';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import { useProductFormStore } from '@/store/productForm.store';
-import type { Property } from '@/types/variant.type';
 import { VariantsTable } from './VariantsTable';
 import { PropertiesDrawer } from './PropertiesDrawer';
 
-export const VariantsSection = () => {
-  const [drawerOpen, setDrawerOpen]  = useState(false);
-  const { properties, variants, addProperty, removeProperty } = useProductFormStore();
 
-  const handleAdd = (prop: Property) => {
-    addProperty(prop);
-  };
+export const VariantsSection = () => {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const { properties, variants, addProperty, updateProperty, removeProperty } =
+    useProductFormStore();
 
   return (
     <Card>
@@ -22,7 +19,6 @@ export const VariantsSection = () => {
           Combiná diferentes propiedades de tu producto. Ejemplo: color + tamaño.
         </Typography>
 
-        {/* Variants table (only when there are properties) */}
         {properties.length > 0 && (
           <VariantsTable properties={properties} variants={variants} />
         )}
@@ -43,7 +39,8 @@ export const VariantsSection = () => {
         open={drawerOpen}
         properties={properties}
         onClose={() => setDrawerOpen(false)}
-        onAddProperty={handleAdd}
+        onAddProperty={addProperty}
+        onUpdateProperty={updateProperty}
         onRemoveProperty={removeProperty}
       />
     </Card>

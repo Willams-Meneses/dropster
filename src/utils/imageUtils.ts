@@ -1,5 +1,3 @@
-// src/utils/imageUtils.ts
-
 export const IMAGE_MAX_COUNT = 12;
 
 export const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
@@ -8,7 +6,7 @@ export interface ImagePreview {
   id: string;
   base64: string;
   mimetype: string;
-  file: File;
+  file?: File; // optional — existing images from API don't have a File object
   previewUrl: string;
 }
 

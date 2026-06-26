@@ -4,15 +4,11 @@ import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRou
 import { useProductFormStore } from '@/store/productForm.store';
 import { PropertiesDrawer } from './variants/PropertiesDrawer';
 import { VariantsTable } from './variants/VariantsTable';
-import type { Property } from '@/types/variant.type';
 
 export const VariantsSection = () => {
-  const [drawerOpen, setDrawerOpen]  = useState(false);
-  const { properties, variants, addProperty, removeProperty } = useProductFormStore();
-
-  const handleAdd = (prop: Property) => {
-    addProperty(prop);
-  };
+  const [drawerOpen, setDrawerOpen] = useState(false);
+   const { properties, variants, addProperty, updateProperty, removeProperty } =
+    useProductFormStore();
 
   return (
     <Card>
@@ -43,7 +39,8 @@ export const VariantsSection = () => {
         open={drawerOpen}
         properties={properties}
         onClose={() => setDrawerOpen(false)}
-        onAddProperty={handleAdd}
+        onAddProperty={addProperty}
+        onUpdateProperty={updateProperty}
         onRemoveProperty={removeProperty}
       />
     </Card>

@@ -15,11 +15,18 @@ export interface ProductImage {
 export interface ProductVariant {
   id: string;
   values: string[];
+  sku: string | null;        
+  barcode: string | null;    
   cost: string;
   suggestedMargin: string;
   suggestedPrice: string;
   stock: number;
   reservedStock: number;
+  weight: string | null;     
+  width: string | null;      
+  height: string | null;     
+  depth: string | null;      
+  images: ProductImage[];
   isActive: boolean;
 }
 
@@ -44,7 +51,7 @@ export interface ApiProduct {
   provider: ProductProvider;
   category: ProductCategory | null;
   variants: ProductVariant[];
-  isActive: boolean;   // ← agregar
+  isActive: boolean;   
   updatedAt: string;
 }
 
@@ -65,12 +72,12 @@ export interface Product {
 }
 
 // ─── Create product ───────────────────────────────────────────────────────────
- 
+
 export interface CreateProductImagePayload {
   base64: string;
   mimetype: string;
 }
- 
+
 export interface CreateProductPayload {
   name: string;
   description?: string;
@@ -79,8 +86,38 @@ export interface CreateProductPayload {
   images: CreateProductImagePayload[];
   variants: unknown[];
 }
- 
+
 export interface CreateProductResponse {
+  id: string;
+  name: string;
+}
+
+// ─── Update product ───────────────────────────────────────────────────────────
+
+export interface UpdateProductVariantPayload {
+  values: string[];
+  sku?: string;
+  cost: string;
+  suggestedMargin: string;
+  suggestedPrice: string;
+  stock: number;
+  weight?: string;
+  depth?: string;
+  width?: string;
+  height?: string;
+  images?: CreateProductImagePayload[];
+}
+
+export interface UpdateProductPayload {
+  name?: string;
+  description?: string;
+  categoryId?: string;
+  attributes?: string[];
+  images?: CreateProductImagePayload[];
+  variants?: UpdateProductVariantPayload[];
+}
+
+export interface UpdateProductResponse {
   id: string;
   name: string;
 }
