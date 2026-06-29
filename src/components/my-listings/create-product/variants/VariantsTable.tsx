@@ -15,6 +15,7 @@ import { useProductFormStore } from '@/store/productForm.store';
 import VariantEditDrawer from './VariantEditDrawer';
 import VariantPhotosDrawer from './VariantPhotosDrawer';
 import type { ImagePreview } from '@/utils/imageUtils';
+import { formatPercentage } from '@/utils/format.utils';
 
 interface VariantsTableProps {
   properties: Property[];
@@ -103,32 +104,78 @@ const VariantCell: React.FC<VariantCellProps> = ({ variant, index, onEditPhoto }
 interface GainInputProps {
   cost: string;
   suggestedPrice: string;
+  suggestedMargin: string;
   onChange: (newSuggestedPrice: string, newMargin: string) => void;
 }
 
-const GainInput: React.FC<GainInputProps> = ({ cost, suggestedPrice, onChange }) => {
+// const GainInput: React.FC<GainInputProps> = ({ cost, suggestedMargin, onChange }) => {
+//   const c = parseFloat(cost) || 0;
+//   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     const newMarginPct = parseFloat(e.target.value.replace('%', '').trim()) || 0;
+//     if (c > 0 && newMarginPct > 0) {
+//       const newSP = c * (1 + newMarginPct / 100);  // Margen sobre costo
+//       onChange(newSP.toFixed(2), newMarginPct.toFixed(2));
+//     }
+//   };
+
+//   return (
+//     <TextField
+//       value={formatPercentage(suggestedMargin)}
+//       onChange={handleChange}
+//       slotProps={{ input: { endAdornment: <InputAdornment position="end">%</InputAdornment> } }}
+//       sx={{ width: '100%', maxWidth: 120 }}
+//     />
+//   );
+// };
+
+// 1. Nuevo tipo de props para GainInput con localValue controlado
+interface GainInputProps {
+  cost: string;
+  suggestedPrice: string;
+  suggestedMargin: string;
+  onChange: (newSuggestedPrice: string, newMargin: string) => void;
+}
+
+// 2. GainInput con estado local para poder borrar el campo completo
+const GainInput: React.FC<GainInputProps> = ({ cost, suggestedMargin, onChange }) => {
+  const [isFocused, setIsFocused] = useState(false);
+  const [localValue, setLocalValue] = useState('');
   const c = parseFloat(cost) || 0;
-  const sp = parseFloat(suggestedPrice) || 0;
-  const margin = c > 0 && sp > 0 ? ((sp - c) / sp) * 100 : 0;
+
+  // Cuando no está enfocado, mostramos siempre el valor de la prop
+  const displayValue = isFocused ? localValue : formatPercentage(suggestedMargin);
+
+  const handleFocus = () => {
+    setLocalValue(formatPercentage(suggestedMargin)); // partir del valor actual
+    setIsFocused(true);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newMarginPct = parseFloat(e.target.value.replace('%', '').trim()) || 0;
-    if (c > 0 && newMarginPct > 0 && newMarginPct < 100) {
-      const newSP = c / (1 - newMarginPct / 100);
+    const raw = e.target.value.replace('%', '').trim();
+    setLocalValue(raw);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+    const newMarginPct = parseFloat(localValue) || 0;
+    if (c > 0 && newMarginPct > 0) {
+      const newSP = c * (1 + newMarginPct / 100);
       onChange(newSP.toFixed(2), newMarginPct.toFixed(2));
     }
+    // Si es inválido, al perder foco displayValue vuelve a suggestedMargin automáticamente
   };
 
   return (
     <TextField
-      value={`${margin.toFixed(0)}`}
+      value={displayValue}
       onChange={handleChange}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
       slotProps={{ input: { endAdornment: <InputAdornment position="end">%</InputAdornment> } }}
       sx={{ width: '100%', maxWidth: 120 }}
     />
   );
 };
-
 export const VariantsTable: React.FC<VariantsTableProps> = ({ properties, variants }) => {
   const removeProperty = useProductFormStore((s) => s.removeProperty);
   const updateVariant = useProductFormStore((s) => s.updateVariant);
@@ -192,14 +239,33 @@ export const VariantsTable: React.FC<VariantsTableProps> = ({ properties, varian
     },
     {
       key: 'cost', header: 'Precio', width: '130px',
-      render: (row) => <PriceInput value={Number(row.cost)} disabled />,
+      render: (row) => (
+        <PriceInput
+          value={Number(row.cost)}
+          onChange={(val) => {
+            const margin = parseFloat(row.suggestedMargin) || 0;
+            const newSP = margin > 0 ? val * (1 + margin / 100) : Number(row.suggestedPrice);
+            updateVariant(row._idx, {
+              cost: String(val),
+              suggestedPrice: newSP.toFixed(2),
+            });
+          }}
+        />
+      ),
     },
     {
       key: 'suggestedPrice', header: 'Precio de venta sugerido', width: '160px',
       render: (row) => (
         <PriceInput
           value={Number(row.suggestedPrice)}
-          onChange={(val) => updateVariant(row._idx, { suggestedPrice: String(val) })}
+          onChange={(val) => {
+            const c = parseFloat(row.cost) || 0;
+            const newMargin = c > 0 ? (((val - c) / c) * 100).toFixed(2) : '0';
+            updateVariant(row._idx, {
+              suggestedPrice: String(val),
+              suggestedMargin: newMargin,
+            });
+          }}
         />
       ),
     },
@@ -209,6 +275,7 @@ export const VariantsTable: React.FC<VariantsTableProps> = ({ properties, varian
         <GainInput
           cost={row.cost}
           suggestedPrice={row.suggestedPrice}
+          suggestedMargin={row.suggestedMargin}
           onChange={(newSP, newMargin) =>
             updateVariant(row._idx, { suggestedPrice: newSP, suggestedMargin: newMargin })
           }
