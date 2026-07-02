@@ -14,6 +14,7 @@ import TiendanubeCallbackPage from './pages/TiendanubeCallbackPage';
 import { SnackbarProvider } from 'notistack';
 import MyStoresDetailPage from './pages/MyStoresDetailPage';
 import ProductFormPage from './pages/ProductFormPage';
+import { ProductDetailPage } from './pages/ProductDetailPage';
 
 // Rutas públicas que no necesitan token
 const PUBLIC_ROUTES = ['/login', '/register', '/forgot-password'];
@@ -66,6 +67,7 @@ function App() {
             <Route path='my-listings/edit/:id' element={ <ProductFormPage />} />
             <Route path="my-stores" element={<MyStoresPage />} />
             <Route path="my-stores/detail" element={<MyStoresDetailPage />} />
+            <Route path='products/:id' element={ <ProductDetailPage />} />
           </Route>
         </Route>
 
