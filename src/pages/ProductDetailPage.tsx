@@ -7,6 +7,8 @@ import { ImageGallery } from '@/components/products/product-detail/ImageGallery'
 import { ProductDescription } from '@/components/products/product-detail/ProductDescription';
 import { ProviderInfo } from '@/components/products/product-detail/ProviderInfo';
 import { BackButton } from '@/components/ui/buttons/BackButton';
+import { useCartStore } from '@/store/cartStore';
+import { useSnackbar } from 'notistack';
 
 // Wrapper con key={id} fuerza un remount limpio del hook cuando cambia el producto,
 // así no hay que preocuparse por resetear estado local "a mano".
@@ -30,6 +32,16 @@ const ProductDetailContent = () => {
     increaseQuantity,
     decreaseQuantity,
   } = useProductDetail();
+
+  const { addItem } = useCartStore();
+  const { enqueueSnackbar } = useSnackbar();
+
+  // Handler para agregar al carrito
+  const handleAddToCart = () => {
+    if (!selectedVariant || !product) return;
+    addItem(selectedVariant, product.id, product.name);
+    enqueueSnackbar('✅ Producto agregado al carrito', { variant: 'success' });
+  };
 
   if (isLoading) {
     return (
@@ -73,6 +85,7 @@ const ProductDetailContent = () => {
             quantity={quantity}
             onIncrease={increaseQuantity}
             onDecrease={decreaseQuantity}
+            onAddToCart={handleAddToCart}
           />
         </Grid>
       </Grid>

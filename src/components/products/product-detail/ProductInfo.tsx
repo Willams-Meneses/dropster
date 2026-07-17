@@ -1,4 +1,3 @@
-// src/components/product-detail/ProductInfo.tsx
 import { Box, Button, Chip, Typography, IconButton } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -16,6 +15,7 @@ interface ProductInfoProps {
   quantity: number;
   onIncrease: () => void;
   onDecrease: () => void;
+  onAddToCart: () => void;
 }
 
 export const ProductInfo = ({
@@ -28,6 +28,7 @@ export const ProductInfo = ({
   quantity,
   onIncrease,
   onDecrease,
+  onAddToCart
 }: ProductInfoProps) => {
   const price = selectedVariant ? Number(selectedVariant.suggestedPrice) : undefined;
   const margin = selectedVariant ? Number(selectedVariant.suggestedMargin) : undefined;
@@ -145,6 +146,7 @@ export const ProductInfo = ({
           fullWidth
           startIcon={<ShoppingCartIcon />}
           disabled={!selectedVariant}
+          onClick={onAddToCart}
         >
           Compra manual
         </Button>
