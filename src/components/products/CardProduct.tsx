@@ -12,6 +12,7 @@ import { PercentageIcon } from '../icons/PercentageIcon';
 import { colors } from '@/theme/palette';
 import { CARD_VARIANT, type CardVariant } from '@/types/product.type';
 import { useStoreOperations } from '@/hooks/useStoreOperations';
+import { useNavigate } from 'react-router-dom';
 
 interface CardProductProps {
   product: Product;
@@ -64,9 +65,12 @@ const CardProduct: React.FC<CardProductProps> = ({
   // const isFeatured = variant === 'featured';
   const isFeatured = variant === CARD_VARIANT.FEATURED;
   const { addProduct, isLoading } = useStoreOperations(); // ✅ Usar hook
+  const navigate = useNavigate();
 
-  const handleAddToStore = () => {
-    addProduct(product.id); // ✅ Asumiendo que product tiene un 'id'
+  // Evitar que el click en el botón active la navegación del card
+  const handleAddToStore = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    addProduct(product.id);
   };
 
   // Badge dentro de imageSection, posicionado relativo a la imagen
@@ -204,7 +208,9 @@ const CardProduct: React.FC<CardProductProps> = ({
           position: 'relative',
           overflow: 'hidden',
           width: '100%',
+          cursor: 'pointer',
         }}
+        onClick={() => { navigate(`/dashboard/products/${product.id}`); }}
       >
         <Typography
           variant="h5"
@@ -239,7 +245,9 @@ const CardProduct: React.FC<CardProductProps> = ({
         width: '100%',
         height: '100%',
         overflow: 'hidden',
+        cursor: 'pointer',
       }}
+      onClick={() => { navigate(`/dashboard/products/${product.id}`); }}
     >
       {imageSection}
       {contentSection}
