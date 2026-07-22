@@ -1,5 +1,4 @@
-import { Box, Grid, Typography, TextField, Alert } from '@mui/material';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import { Box, Grid, Typography, TextField } from '@mui/material';
 import { Controller, type Control, type FieldErrors } from 'react-hook-form';
 import type { CheckoutFormValues } from '@/schemas/checkout.schema';
 
@@ -184,12 +183,6 @@ export const CheckoutForm = ({ control, errors }: CheckoutFormProps) => {
           />
         </Grid>
       </Grid>
-
-      <Alert severity="info" icon={<InfoOutlinedIcon fontSize="small" />} sx={{ borderRadius: 2, bgcolor: 'neutral.100', color: 'text.primary' }}>
-        <Typography variant="body2">
-          El pedido llegara a destino de 5 a 7 días habiles al domicilio proporcionado según el código postal ingresado.
-        </Typography>
-      </Alert>
     </Box>
   );
 };
