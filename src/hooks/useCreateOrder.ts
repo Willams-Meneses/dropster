@@ -19,6 +19,7 @@ export const useCreateOrder = () => {
         customerName: `${formData.firstName} ${formData.lastName}`,
         customerEmail: 'dropshipper1@test.com', // Se puede obtener de un store de usuario si existe
         customerAddress: `${formData.street} ${formData.height}, ${formData.city}, ${formData.province}, ${formData.country}`,
+        customerCp: formData.postalCode,
         items: items.map(item => ({
           variantId: item.variantId,
           quantity: item.quantity,
