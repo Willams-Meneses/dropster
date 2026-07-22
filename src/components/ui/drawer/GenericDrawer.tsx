@@ -46,7 +46,7 @@ export default function GenericDrawer({
           alignItems: 'center',
           justifyContent: 'space-between',
           px: 3,
-          py: 2.5,
+          py: 1.5,
         }}
       >
         {title}
@@ -66,7 +66,7 @@ export default function GenericDrawer({
       {footer && (
         <>
           <Divider />
-          <Box sx={{ px: 3, py: 2.5 }}>{footer}</Box>
+          <Box sx={{ px: 3, py: 1.5 }}>{footer}</Box>
         </>
       )}
     </Drawer>
