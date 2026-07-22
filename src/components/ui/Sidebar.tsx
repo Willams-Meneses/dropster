@@ -46,7 +46,7 @@ const NAV_DROPSHIPPER: NavSection = {
   section: 'Dropshipper',
   items: [
     { label: 'Mis tiendas', path: '/dashboard/my-stores', icon: <ShopIcon size={15} color='currentColor' /> },
-    { label: 'Pedidos', path: '/dashboard/pedidos', icon: <OrdersIcon size={15} color='currentColor' /> },
+    { label: 'Pedidos', path: '/dashboard/orders', icon: <OrdersIcon size={15} color='currentColor' /> },
     { label: 'Devoluciones', path: '/dashboard/devoluciones', icon: <RefundIcon size={15} color='currentColor' /> },
   ],
 };

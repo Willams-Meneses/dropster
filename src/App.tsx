@@ -15,6 +15,7 @@ import { SnackbarProvider } from 'notistack';
 import MyStoresDetailPage from './pages/MyStoresDetailPage';
 import ProductFormPage from './pages/ProductFormPage';
 import { ProductDetailPage } from './pages/ProductDetailPage';
+import OrdersPage from './pages/OrdersPage';
 
 // Rutas públicas que no necesitan token
 const PUBLIC_ROUTES = ['/login', '/register', '/forgot-password'];
@@ -68,6 +69,7 @@ function App() {
             <Route path="my-stores" element={<MyStoresPage />} />
             <Route path="my-stores/detail" element={<MyStoresDetailPage />} />
             <Route path='products/:id' element={ <ProductDetailPage />} />
+            <Route path='orders' element={ <OrdersPage />} />
           </Route>
         </Route>
 
