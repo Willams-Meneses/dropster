@@ -56,7 +56,7 @@ const NAV_PROVIDER: NavSection = {
   items: [
     { label: 'Mis publicaciones', path: '/dashboard/my-listings', icon: <PublishIcon size={15} color='currentColor' /> },
     { label: 'Resumen', path: '/dashboard/resumen', icon: <ChartIcon size={15} color='currentColor' /> },
-    { label: 'Mis ventas', path: '/dashboard/mis-ventas', icon: <CashRegisterIcon size={15} color='currentColor' /> },
+    { label: 'Mis ventas', path: '/dashboard/my-sales', icon: <CashRegisterIcon size={15} color='currentColor' /> },
   ],
 };
 

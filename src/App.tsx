@@ -16,6 +16,7 @@ import MyStoresDetailPage from './pages/MyStoresDetailPage';
 import ProductFormPage from './pages/ProductFormPage';
 import { ProductDetailPage } from './pages/ProductDetailPage';
 import OrdersPage from './pages/OrdersPage';
+import MySalesPage from './pages/MySalesPage';
 
 // Rutas públicas que no necesitan token
 const PUBLIC_ROUTES = ['/login', '/register', '/forgot-password'];
@@ -70,6 +71,7 @@ function App() {
             <Route path="my-stores/detail" element={<MyStoresDetailPage />} />
             <Route path='products/:id' element={ <ProductDetailPage />} />
             <Route path='orders' element={ <OrdersPage />} />
+            <Route path='my-sales' element={ <MySalesPage />} />
           </Route>
         </Route>
 
