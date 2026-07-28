@@ -1,5 +1,6 @@
 import { Box, Typography, Button, Modal } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { useNavigate } from 'react-router-dom';
 
 interface SuccessModalProps {
   open: boolean;
@@ -7,6 +8,17 @@ interface SuccessModalProps {
 }
 
 export const SuccessModal = ({ open, onClose }: SuccessModalProps) => {
+  const navigate = useNavigate();
+
+  const handleGoToOrders = () => {
+    onClose();
+    navigate('/dashboard/orders');
+  };
+
+  const handleGoToProducts = () => {
+    onClose();
+    navigate('/dashboard/products');
+  };
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={{
@@ -19,15 +31,15 @@ export const SuccessModal = ({ open, onClose }: SuccessModalProps) => {
         <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center' }}>
           Tu pedido esta listo para que lo abones y comience el proceso de envío. Podés revisarlo en la sección "Pedidos".
         </Typography>
-        
+
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, width: '100%', mt: 2 }}>
-          <Button variant="text" color="primary" onClick={onClose}>
+          <Button variant="text" color="primary" onClick={handleGoToOrders}>
             Ir a Pedidos
           </Button>
           <Button variant="text" color="primary" onClick={onClose}>
             Cargar otro pedido igual
           </Button>
-          <Button variant="contained" fullWidth onClick={onClose} sx={{ mt: 1 }}>
+          <Button variant="contained" fullWidth onClick={handleGoToProducts} sx={{ mt: 1 }}>
             Continuar comprando
           </Button>
         </Box>
