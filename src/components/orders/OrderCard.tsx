@@ -12,9 +12,10 @@ interface OrderCardProps {
   onPay?: (id: string) => void;
   onView?: (id: string) => void;
   onMenuClick?: (id: string) => void;
+  isPaying?: boolean;
 }
 
-export const OrderCard: React.FC<OrderCardProps> = ({ order, onPay, onView, onMenuClick }) => {
+export const OrderCard: React.FC<OrderCardProps> = ({ order, onPay, onView, onMenuClick, isPaying }) => {
   const formattedDate = new Date(order.createdAt).toLocaleDateString('es-AR', {
     day: '2-digit',
     month: 'short',
@@ -35,7 +36,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order, onPay, onView, onMe
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1.5 }}>
         <Typography variant="subtitle1">{formattedDate} hs</Typography>
         {/* <Divider /> */}
-        <Box sx={{ width: '1px', height: 16, backgroundColor: colors.neutral[300] }} /> 
+        <Box sx={{ width: '1px', height: 16, backgroundColor: colors.neutral[300] }} />
         <Typography variant="h6">{order.storeName}</Typography>
         <Box sx={{ flex: 1 }} />
         <Typography variant="h6">
@@ -54,17 +55,24 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order, onPay, onView, onMe
           gap: 1.5,
           pb: 2,
           mb: 2,
-          borderBottom: `1px solid ${colors.neutral[300]}`,
         }}
       >
         <Typography variant="subtitle1">Número de pedido: #{order.orderNumber}</Typography>
         <StatusChip config={ORDER_STATUS_CONFIG[order.status]} />
         <Box sx={{ flex: 1 }} />
-        <Button variant="outlined" size="small" onClick={() => onView?.(order.id)} sx={{ textTransform: 'none' }}>
+        <Button variant="outlined" size="small" onClick={() => onView?.(order.id)} sx={{
+          py: 0.5,
+          px: 1.5
+        }}>
           Ver pedido
         </Button>
         {order.status === 'pending_payment' && (
-          <Button variant="contained" size="small" onClick={() => onPay?.(order.id)} sx={{ textTransform: 'none' }}>
+          <Button variant="contained" size="small" onClick={() => onPay?.(order.id)} loading={isPaying}
+            disabled={isPaying}  sx={{
+            py: 0.5,
+            px: 1.5,
+            width: '95px'
+          }}>
             Pagar
           </Button>
         )}

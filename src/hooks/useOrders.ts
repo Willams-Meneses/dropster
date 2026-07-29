@@ -8,12 +8,15 @@ interface UseOrdersResult {
   isLoading: boolean;
   error: string | null;
   refetch: () => void;
+  payOrder: (id: string) => Promise<string | null>;
+  payingOrderId: string | null;
 }
 
 export const useOrders = (): UseOrdersResult => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [payingOrderId, setPayingOrderId] = useState<string | null>(null);
   const [tick, setTick] = useState(0);
 
   useEffect(() => {
@@ -47,5 +50,19 @@ export const useOrders = (): UseOrdersResult => {
 
   const refetch = () => setTick((t) => t + 1);
 
-  return { orders, isLoading, error, refetch };
+  const payOrder = async (id: string): Promise<string | null> => {
+    setPayingOrderId(id);
+    setError(null);
+    try {
+      const { checkoutUrl } = await orderService.initiatePayment(id);
+      return checkoutUrl;
+     } catch {
+      setError('No se pudo iniciar el pago. Intentá de nuevo.');
+      return null;
+    } finally {
+      setPayingOrderId(null);
+    }
+  };
+
+  return { orders, isLoading, error, refetch, payOrder, payingOrderId };
 };

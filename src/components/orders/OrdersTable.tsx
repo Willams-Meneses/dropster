@@ -8,12 +8,13 @@ interface OrdersTableProps {
   onPay?: (id: string) => void;
   onView?: (id: string) => void;
   onMenuClick?: (id: string) => void;
+  payingOrderId?: string | null;
 }
 
-export const OrdersTable: React.FC<OrdersTableProps> = ({ rows, onPay, onView, onMenuClick }) => (
+export const OrdersTable: React.FC<OrdersTableProps> = ({ rows, onPay, onView, onMenuClick, payingOrderId }) => (
   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
     {rows.map((order) => (
-      <OrderCard key={order.id} order={order} onPay={onPay} onView={onView} onMenuClick={onMenuClick} />
+      <OrderCard key={order.id} order={order} onPay={onPay} onView={onView} onMenuClick={onMenuClick} isPaying={payingOrderId === order.id} />
     ))}
   </Box>
 );

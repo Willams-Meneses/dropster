@@ -9,6 +9,7 @@ import { OrdersTable } from '@/components/orders/OrdersTable';
 import { useOrders } from '@/hooks/useOrders';
 import { DEFAULT_SORT_OPTIONS, EMPTY_FILTER_OPTIONS } from '@/store/tableOptions.store';
 import type { OrderStatus } from '@/types/order.type';
+import { useNavigate } from 'react-router-dom';
 
 const STATUS_TAB_MAP: Record<string, OrderStatus | 'all'> = {
   all: 'all',
@@ -20,11 +21,12 @@ const STATUS_TAB_MAP: Record<string, OrderStatus | 'all'> = {
 };
 
 const OrdersPage: React.FC = () => {
-  const { orders, isLoading, error, refetch } = useOrders();
+  const { orders, isLoading, error, refetch, payOrder, payingOrderId } = useOrders();
   const [activeTab, setActiveTab] = useState('all');
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('newest');
   const [filter, setFilter] = useState('');
+  const navigate = useNavigate();
 
   const countByStatus = (status: OrderStatus) =>
     orders.filter((o) => o.status === status).length;
@@ -45,14 +47,16 @@ const OrdersPage: React.FC = () => {
     return true;
   });
 
-  const handlePay = (id: string) => {
-    console.log('Iniciar pago para orden:', id);
-    // TODO: orderService.initiatePayment(id) + redirect a checkoutUrl
+  const handlePay = async (id: string) => {
+    const checkoutUrl = await payOrder(id);
+    if (checkoutUrl) {
+      // Redirige a la URL externa en la MISMA pestaña
+      window.location.href = checkoutUrl;
+    }
   };
 
   const handleView = (id: string) => {
-    console.log('Ver detalle de orden:', id);
-    // TODO: navegación a detalle
+    navigate(`/dashboard/orders/${id}`);
   };
 
   if (isLoading) return <LoadingScreen message="Cargando órdenes..." />;
@@ -80,7 +84,7 @@ const OrdersPage: React.FC = () => {
         {filteredOrders.length === 0 ? (
           <ErrorMessage message="No se encontraron órdenes para este filtro." onRetry={refetch} />
         ) : (
-          <OrdersTable rows={filteredOrders} onPay={handlePay} onView={handleView} />
+          <OrdersTable rows={filteredOrders} onPay={handlePay} onView={handleView} payingOrderId={payingOrderId}  />
         )}
       </Box>
     </Box>
