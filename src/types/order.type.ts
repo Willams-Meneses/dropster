@@ -32,6 +32,7 @@ export interface ApiSubOrder {
   id: string;
   status: ApiSubOrderStatus;
   shippingCost: string;
+  tracking?: string | null;
   createdAt: string;
   providerId?: string;
   providerName?: string;
@@ -75,6 +76,10 @@ export interface ApiOrder {
   expiresAt: string;
   customerName: string;
   customerEmail: string;
+  customerAddress?: string;
+  customerCp?: string;
+  customerLocalidad?: string;
+  customerProvincia?: string;
   createdAt: string;
   subOrders: ApiSubOrder[];
 }
@@ -131,4 +136,10 @@ export interface Order {
   status: OrderStatus;
   total: number | string;
   subOrders: SubOrder[];
+  customerName: string;
+  customerEmail: string;
+  customerAddress?: string;
+  customerCp?: string;
+  customerLocalidad?: string;
+  customerProvincia?: string;
 }
