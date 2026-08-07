@@ -1,12 +1,8 @@
 export const formatPrice = (price: string | number): string => {
-  if (typeof price === 'string') {
-    const withComma = price.replace('.', ',');
-    return `$ ${withComma}`;
-  }
-  
-  return `$ ${price.toLocaleString('es-AR', { 
+  const num = typeof price === 'string' ? parseFloat(price) : price;
+  return `$ ${num.toLocaleString('es-AR', {
     minimumFractionDigits: 2,
-    maximumFractionDigits: 2 
+    maximumFractionDigits: 2,
   })}`;
 };
 
