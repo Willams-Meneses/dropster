@@ -1,13 +1,9 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {
   Box,
-  Button,
-  IconButton,
-  Tooltip,
+  Button
 } from '@mui/material';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useOrderDetail } from '@/hooks/useOrderDetail';
 import { LoadingScreen } from '@/components/ui/LoadingScreen';
 import { ErrorMessage } from '@/components/ui/ErrorMessage';
@@ -15,10 +11,11 @@ import { OrderStatusSection } from '@/components/orders/detail/OrderStatusSectio
 import { OrderDetailProducts } from '@/components/orders/detail/OrderDetailProducts';
 import { OrderDetailSidebar } from '@/components/orders/detail/OrderDetailSidebar';
 import { orderService } from '@/services/order.service';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { ActionsMenu, type ActionsMenuItem } from '@/components/ui/buttons/ActionsMenu';
 
 const OrderDetailPage: React.FC = () => {
   const { id = '' } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const { order, isLoading, error, refetch } = useOrderDetail(id);
 
   const handlePay = async () => {
@@ -30,54 +27,37 @@ const OrderDetailPage: React.FC = () => {
     }
   };
 
+  const handleCancel = () => {
+    // TODO: Lógica para cancelar el pedido (ej: orderService.cancelOrder(id))
+    console.log('Cancelar pedido:', id);
+  };
+
   if (isLoading) return <LoadingScreen message="Cargando pedido..." />;
   if (error || !order) return <ErrorMessage message={error ?? 'Pedido no encontrado.'} onRetry={refetch} />;
 
   const isPendingPayment = order.status === 'pending_payment';
 
+  const menuActions: ActionsMenuItem[] = [
+    {
+      label: 'Cancelar pedido',
+      onClick: handleCancel,
+      danger: true,
+    },
+  ];
+
   return (
     <Box sx={{ px: 0, mt: 3 }}>
-      {/* ── Page header ── */}
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          mb: 4,
-        }}
-      >
+      <PageHeader title={`Pedido #${order.orderNumber}`} actions={
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <Tooltip title="Volver">
-            <IconButton size="small" onClick={() => navigate(-1)}>
-              <ArrowBackIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-          <Box
-            component="h1"
-            sx={{
-              m: 0,
-              fontSize: '24px',
-              fontWeight: 700,
-              color: 'text.primary',
-              fontFamily: '"Poppins", sans-serif',
-            }}
-          >
-            Pedido #{order.orderNumber}
-          </Box>
-        </Box>
-
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           {isPendingPayment && (
-            <Button variant="contained" onClick={() => void handlePay()}>
+            <Button variant="contained" onClick={handlePay}>
               Pagar
             </Button>
           )}
-          <IconButton size="small">
-            <MoreHorizIcon />
-          </IconButton>
+          {/* El menú va siempre, fuera del condicional */}
+          <ActionsMenu actions={menuActions} ariaLabel="Acciones del pedido" />
         </Box>
-      </Box>
-
+      } />
       {/* ── Two-column layout ── */}
       <Box
         sx={{
