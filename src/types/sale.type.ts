@@ -1,6 +1,4 @@
-import type { ApiImage, ApiVariantProduct } from './order.type';
-
-// ─── API (shape real del backend para Sales) ──────────────────────────────
+import type { ApiImage, ApiVariantProduct, ApiSubOrderStatus } from './order.type';
 
 export interface ApiSaleItemVariant {
   id: string;
@@ -23,14 +21,15 @@ export interface ApiSaleOrder {
   customerName: string;
   customerEmail: string;
   customerAddress: string;
+  customerCp?: string;
+  customerLocalidad?: string;
+  customerProvincia?: string;
   createdAt: string;
 }
 
-export type ApiSaleStatus = 'paid' | 'shipped' | 'delivered' | 'returned' | 'not_delivered';
-
 export interface ApiSale {
   id: string;
-  status: ApiSaleStatus;
+  status: ApiSubOrderStatus; // ✅ reutiliza el enum real del backend
   tracking: string | null;
   shippingCost: string;
   createdAt: string;
@@ -43,14 +42,9 @@ export interface ApiSalesResponse {
   total: number;
 }
 
-// ─── UI (shape que espera SaleCard / SaleItemsBox) ────────────────────────
+// ─── UI ─────────────────────────────────────────────────────────────────
 
-export type SaleStatus =
-  | 'ready_to_dispatch'
-  | 'in_process'
-  | 'delivered'
-  | 'returned'
-  | 'not_delivered';
+export type SaleStatus = 'ready_to_dispatch' | 'in_process' | 'delivered' | 'return_requested' | 'returned' | 'cancelled';
 
 export interface SaleItem {
   id: string;
@@ -67,9 +61,15 @@ export interface Sale {
   orderNumber: string;
   createdAt: string;
   customerName: string;
+  customerEmail?: string;
+  customerAddress?: string;
+  customerCp?: string;
+  customerLocalidad?: string;
+  customerProvincia?: string;
   status: SaleStatus;
   total: number;
   shippingCost: number | string;
+  tracking?: string | null;
   trackingUrl?: string | null;
   items: SaleItem[];
 }
