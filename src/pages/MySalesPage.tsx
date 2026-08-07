@@ -10,14 +10,15 @@ import { useSales } from '@/hooks/useSales';
 import { DEFAULT_SORT_OPTIONS, EMPTY_FILTER_OPTIONS } from '@/store/tableOptions.store';
 import type { SaleStatus } from '@/types/sale.type';
 import { SalesTable } from '@/components/my-sales/SalesTable';
+import { useNavigate } from 'react-router-dom';
 
 const STATUS_TAB_MAP: Record<string, SaleStatus | 'all'> = {
   all: 'all',
   ready_to_dispatch: 'ready_to_dispatch',
   in_process: 'in_process',
   delivered: 'delivered',
+  return_requested: 'return_requested',
   returned: 'returned',
-  not_delivered: 'not_delivered',
 };
 
 const MySalesPage: React.FC = () => {
@@ -26,6 +27,7 @@ const MySalesPage: React.FC = () => {
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('newest');
   const [filter, setFilter] = useState('');
+  const navigate = useNavigate();
 
   const countByStatus = (status: SaleStatus) =>
     sales.filter((s) => s.status === status).length;
@@ -35,8 +37,8 @@ const MySalesPage: React.FC = () => {
     { value: 'ready_to_dispatch', label: 'Listo para despachar', count: countByStatus('ready_to_dispatch') },
     { value: 'in_process', label: 'En proceso', count: countByStatus('in_process') },
     { value: 'delivered', label: 'Entregado', count: countByStatus('delivered') },
+    { value: 'return_requested', label: 'Devolución solicitada', count: countByStatus('return_requested') },
     { value: 'returned', label: 'Devuelto', count: countByStatus('returned') },
-    { value: 'not_delivered', label: 'No entregado', count: countByStatus('not_delivered') },
   ];
 
   const filteredSales = sales.filter((s) => {
@@ -47,8 +49,7 @@ const MySalesPage: React.FC = () => {
   });
 
   const handleView = (id: string) => {
-    console.log('Ver detalle de venta:', id);
-    // TODO: navegación a detalle
+    navigate(`/dashboard/my-sales/${id}`);
   };
 
   const handlePrintLabel = (id: string) => {
