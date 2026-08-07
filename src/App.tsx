@@ -18,6 +18,7 @@ import { ProductDetailPage } from './pages/ProductDetailPage';
 import OrdersPage from './pages/OrdersPage';
 import MySalesPage from './pages/MySalesPage';
 import OrderDetailPage from './pages/OrderDetailPage';
+import { PaymentStatusPage } from './pages/PaymentStatusPage';
 
 // Rutas públicas que no necesitan token
 const PUBLIC_ROUTES = ['/login', '/register', '/forgot-password'];
@@ -57,6 +58,9 @@ function App() {
       */}
         <Route path="/dashboard/my-stores/callback" element={<TiendanubeCallbackPage />} />
 
+        {/* 👇 Ruta de retorno de Mercado Pago, fuera del DashboardLayout pero protegida */}
+        <Route path="/payment/status" element={<PaymentStatusPage />} />
+
         {/* Rutas protegidas */}
         {/* TODO: El protectedRoute es un layout de rutas que protege las rutas hijas y se encarga de redireccionar al dashboard si cumple con los
       requerimientos de este layout, sino cumple redirige al path correspondiente. Por lo tanto cuando api da success por ejemplo register
@@ -66,14 +70,14 @@ function App() {
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<ProductsPage />} />
             <Route path="my-listings" element={<MyListingsPage />} />
-            <Route path='my-listings/new' element={ <ProductFormPage />} />
-            <Route path='my-listings/edit/:id' element={ <ProductFormPage />} />
+            <Route path='my-listings/new' element={<ProductFormPage />} />
+            <Route path='my-listings/edit/:id' element={<ProductFormPage />} />
             <Route path="my-stores" element={<MyStoresPage />} />
             <Route path="my-stores/detail" element={<MyStoresDetailPage />} />
-            <Route path='products/:id' element={ <ProductDetailPage />} />
-            <Route path='orders' element={ <OrdersPage />} />
-            <Route path='orders/:id' element={ <OrderDetailPage />} />
-            <Route path='my-sales' element={ <MySalesPage />} />
+            <Route path='products/:id' element={<ProductDetailPage />} />
+            <Route path='orders' element={<OrdersPage />} />
+            <Route path='orders/:id' element={<OrderDetailPage />} />
+            <Route path='my-sales' element={<MySalesPage />} />
           </Route>
         </Route>
 
