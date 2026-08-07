@@ -1,6 +1,8 @@
 import React from 'react';
 import { Box, Typography, Divider } from '@mui/material';
 import type { Order } from '@/types/order.type';
+import { formatPrice } from '@/utils/formatPrice';
+import { formatDate } from '@/utils/formatDate';
 
 interface SidebarRowProps {
   label: string;
@@ -19,19 +21,6 @@ const SidebarRow: React.FC<SidebarRowProps> = ({ label, value }) => (
 const SectionTitle: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <Typography variant="h3" sx={{ mb: 2 }}>{children}</Typography>
 );
-
-const formatDate = (iso: string): string => {
-  const d = new Date(iso);
-  return d.toLocaleString('es-AR', {
-    day: 'numeric',
-    month: 'short',
-    hour: '2-digit',
-    minute: '2-digit',
-  }) + ' hs';
-};
-
-const formatMoney = (val: number | string): string =>
-  `$ ${Number(val).toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
 
 interface OrderDetailSidebarProps {
   order: Order;
@@ -126,21 +115,21 @@ export const OrderDetailSidebar: React.FC<OrderDetailSidebarProps> = ({ order })
         <SectionTitle>Totales</SectionTitle>
         <SidebarRow
           label={`${totalItems} artículo${totalItems !== 1 ? 's' : ''}`}
-          value={<Typography variant="body1">{formatMoney(order.total)}</Typography>}
+          value={<Typography variant="body1">{formatPrice(order.total)}</Typography>}
         />
         <SidebarRow
           label="Envío"
-          value={<Typography variant="body1">{formatMoney(totalShipping)}</Typography>}
+          value={<Typography variant="body1">{formatPrice(totalShipping)}</Typography>}
         />
         <SidebarRow
           label="Descuento total"
-          value={<Typography variant="body1">{formatMoney(0)}</Typography>}
+          value={<Typography variant="body1">{formatPrice(0)}</Typography>}
         />
         <Divider sx={{ my: 1 }} />
         <SidebarRow
           label="Total"
           value={
-            <Typography variant="h5">{formatMoney(order.total)}</Typography>
+            <Typography variant="h5">{formatPrice(order.total)}</Typography>
           }
         />
       </Box>
