@@ -7,6 +7,7 @@ import { StatusChip } from '@/components/ui/data-table/StatusChip';
 import { SALE_STATUS_CONFIG } from '@/config/sale-status.config';
 import { SaleItemsBox } from './SaleItemsBox';
 import type { Sale } from '@/types/sale.type';
+import { formatDate } from '@/utils/formatDate';
 
 interface SaleCardProps {
   sale: Sale;
@@ -16,12 +17,6 @@ interface SaleCardProps {
 }
 
 export const SaleCard: React.FC<SaleCardProps> = ({ sale, onView, onPrintLabel, onMenuClick }) => {
-  const formattedDate = new Date(sale.createdAt).toLocaleDateString('es-AR', {
-    day: '2-digit',
-    month: 'short',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
 
   return (
     <Box
@@ -34,7 +29,7 @@ export const SaleCard: React.FC<SaleCardProps> = ({ sale, onView, onPrintLabel, 
     >
       {/* Fila 1: fecha / total / botón de menú circular (...) */}
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1.5 }}>
-        <Typography variant="subtitle1">{formattedDate} hs</Typography>
+        <Typography variant="subtitle1">{formatDate(sale.createdAt)} hs</Typography>
         <Box sx={{ width: '1px', height: 16, backgroundColor: colors.neutral[300] }} />
         <Typography variant="h6">
           Total: $ {Number(sale.total).toLocaleString('es-AR', { minimumFractionDigits: 2 })}
