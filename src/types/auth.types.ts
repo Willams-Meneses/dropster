@@ -11,6 +11,8 @@ export interface User {
   role: Role | null;
   firstName: string;
   lastName: string;
+  dni?: string;
+  phone?: string;
   mercadopagoId: string | null;
   cbu: string | null;
   isActive: boolean;
