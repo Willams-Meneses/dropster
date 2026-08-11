@@ -1,20 +1,17 @@
 import React from 'react';
-import { Box, Button, Grid, TextField, Typography, CircularProgress } from '@mui/material';
+import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { Controller } from 'react-hook-form';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuthStore } from '@/store/auth.store';
 import type { User } from '@/types/auth.types';
+import { LoadingScreen } from '@/components/ui/LoadingScreen';
 
 const PersonalInfoPage: React.FC = () => {
   const user = useAuthStore((s) => s.user);
 
   if (!user) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10 }}>
-        <CircularProgress />
-      </Box>
-    );
+    return <LoadingScreen message="Cargando datos del usuario..." />;
   }
 
   return <PersonalInfoForm user={user} />;
