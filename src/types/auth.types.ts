@@ -13,6 +13,14 @@ export interface User {
   lastName: string;
   dni?: string;
   phone?: string;
+  street?: string;
+  height?: string;
+  floor?: string;
+  apartment?: string;
+  city?: string;
+  province?: string;
+  postalCode?: string;
+  country?: string;
   mercadopagoId: string | null;
   cbu: string | null;
   isActive: boolean;
