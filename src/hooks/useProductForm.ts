@@ -6,7 +6,7 @@ import axios from 'axios';
 import { createProductSchema, type CreateProductFormValues } from '@/schemas/product.schema';
 import { listingsService } from '@/services/listings.service';
 import { useProductFormStore } from '@/store/productForm.store';
-import { type ImagePreview } from '@/utils/imageUtils';
+import { toApiImage, type ImagePreview } from '@/utils/imageUtils';
 import type { ApiProduct } from '@/types/product.type';
 
 interface UseProductFormOptions {
@@ -40,11 +40,9 @@ export const useProductForm = ({ product }: UseProductFormOptions = {}) => {
   const { control, formState: { errors, isValid }, watch, setValue } = form;
   const nameValue = watch('name');
 
-  // ── Hydrate form + store when product loads ─────────────────────────────────
   useEffect(() => {
     if (!product) return;
 
-    // 1. Reset RHF form with the loaded values
     form.reset({
       name: product.name,
       description: product.description ?? '',
@@ -52,10 +50,8 @@ export const useProductForm = ({ product }: UseProductFormOptions = {}) => {
       images: product.images.map((img) => ({ base64: img.url, mimetype: 'image/jpeg' })),
     });
 
-    // 2. Reset store to avoid stale state from a previous session
     resetStore();
 
-    // 3. Rebuild properties from attributes + variant values
     if (product.attributes.length > 0 && product.variants.length > 0) {
       product.attributes.forEach((attrName, attrIndex) => {
         const uniqueValues = [
@@ -79,9 +75,6 @@ export const useProductForm = ({ product }: UseProductFormOptions = {}) => {
       });
     }
 
-    // 4. Hydrate variant data (stock, cost, prices, sku, images) into store variants
-    //    buildVariants creates them with zeros — we patch each one with real API data
-    //    We do this after a tick so addProperty has finished rebuilding variants
     setTimeout(() => {
       const { variants } = useProductFormStore.getState();
       variants.forEach((storeVariant, storeIdx) => {
@@ -97,15 +90,16 @@ export const useProductForm = ({ product }: UseProductFormOptions = {}) => {
           suggestedPrice: apiVariant.suggestedPrice,
           stock: apiVariant.stock,
           weight: apiVariant.weight ?? '',
+          // 👇 guardamos el publicId en `id` para poder recuperarlo en onSubmit
           images: apiVariant.images.map((img) => ({
-            base64: img.url,   // base64 = url para imágenes existentes
+            id: img.publicId,
+            base64: img.url,
             mimetype: 'image/jpeg',
           })),
         });
       });
     }, 0);
 
-    // 5. Hydrate product photos — incluye fotos generales + fotos de variantes
     const generalPreviews: ImagePreview[] = product.images.map((img, i) => ({
       id: img.publicId || `existing-general-${i}`,
       previewUrl: img.url,
@@ -113,7 +107,6 @@ export const useProductForm = ({ product }: UseProductFormOptions = {}) => {
       mimetype: 'image/jpeg',
     }));
 
-    // Fotos de variantes también van al pool de productPhotos para que el drawer las muestre
     const variantPreviews: ImagePreview[] = product.variants.flatMap((v, vi) =>
       v.images.map((img, ii) => ({
         id: img.publicId || `existing-variant-${vi}-${ii}`,
@@ -123,7 +116,6 @@ export const useProductForm = ({ product }: UseProductFormOptions = {}) => {
       }))
     );
 
-    // Deduplicar por id por si una foto aparece en general y en variante
     const allPreviews = [...generalPreviews];
     variantPreviews.forEach((vp) => {
       if (!allPreviews.some((p) => p.id === vp.id)) {
@@ -136,11 +128,9 @@ export const useProductForm = ({ product }: UseProductFormOptions = {}) => {
       shouldValidate: true,
     });
 
-    // Only re-run when the product id changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product?.id]);
 
-  // ── Image handler ───────────────────────────────────────────────────────────
   const handleImagesChange = (previews: ImagePreview[]) => {
     setValue(
       'images',
@@ -150,7 +140,6 @@ export const useProductForm = ({ product }: UseProductFormOptions = {}) => {
     return previews;
   };
 
-  // ── Submit ──────────────────────────────────────────────────────────────────
   const onSubmit = form.handleSubmit(async (values) => {
     const { properties, variants, productPhotos } = useProductFormStore.getState();
     setServerError(null);
@@ -162,7 +151,7 @@ export const useProductForm = ({ product }: UseProductFormOptions = {}) => {
 
       const unassignedImages = productPhotos
         .filter((p) => !assignedBase64s.has(p.base64))
-        .map((p) => ({ base64: p.base64, mimetype: p.mimetype }));
+        .map((p) => toApiImage({ base64: p.base64, mimetype: p.mimetype, id: p.id }));
 
       const variantPayload = variants.map((v) => ({
         values: v.values,
@@ -175,7 +164,7 @@ export const useProductForm = ({ product }: UseProductFormOptions = {}) => {
         depth: v.depth,
         width: v.width,
         height: v.height,
-        images: v.images,
+        images: v.images.map((img) => toApiImage(img)),
       }));
 
       if (isEditing && product) {

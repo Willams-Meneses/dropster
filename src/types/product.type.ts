@@ -15,17 +15,17 @@ export interface ProductImage {
 export interface ProductVariant {
   id: string;
   values: string[];
-  sku: string | null;        
-  barcode: string | null;    
+  sku: string | null;
+  barcode: string | null;
   cost: string;
   suggestedMargin: string;
   suggestedPrice: string;
   stock: number;
   reservedStock: number;
-  weight: string | null;     
-  width: string | null;      
-  height: string | null;     
-  depth: string | null;      
+  weight: string | null;
+  width: string | null;
+  height: string | null;
+  depth: string | null;
   images: ProductImage[];
   isActive: boolean;
 }
@@ -51,7 +51,7 @@ export interface ApiProduct {
   provider: ProductProvider;
   category: ProductCategory | null;
   variants: ProductVariant[];
-  isActive: boolean;   
+  isActive: boolean;
   updatedAt: string;
 }
 
@@ -73,6 +73,11 @@ export interface Product {
 
 // ─── Create product ───────────────────────────────────────────────────────────
 
+// Una imagen puede ser nueva (base64) o ya existente en Cloudinary (url + publicId)
+export type ProductImagePayload =
+  | { base64: string; mimetype: string; url?: undefined; publicId?: undefined }
+  | { url: string; publicId: string; mimetype: string; base64?: undefined };
+
 export interface CreateProductImagePayload {
   base64: string;
   mimetype: string;
@@ -83,7 +88,7 @@ export interface CreateProductPayload {
   description?: string;
   categoryId: string;
   attributes: string[];
-  images: CreateProductImagePayload[];
+  images: ProductImagePayload[];
   variants: unknown[];
 }
 
@@ -105,7 +110,7 @@ export interface UpdateProductVariantPayload {
   depth?: string;
   width?: string;
   height?: string;
-  images?: CreateProductImagePayload[];
+  images?: ProductImagePayload[];
 }
 
 export interface UpdateProductPayload {
@@ -113,7 +118,7 @@ export interface UpdateProductPayload {
   description?: string;
   categoryId?: string;
   attributes?: string[];
-  images?: CreateProductImagePayload[];
+  images?: ProductImagePayload[];
   variants?: UpdateProductVariantPayload[];
 }
 

@@ -1,3 +1,5 @@
+import type { ProductImagePayload } from "@/types/product.type";
+
 export const IMAGE_MAX_COUNT = 12;
 
 export const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
@@ -50,4 +52,25 @@ export async function filesToImagePreviews(files: File[]): Promise<ImagePreview[
  */
 export function revokeImagePreviews(previews: ImagePreview[]): void {
   previews.forEach((p) => URL.revokeObjectURL(p.previewUrl));
+}
+
+/**
+ * Convierte una imagen "interna" (que puede tener una URL de Cloudinary
+ * disfrazada de base64) al shape que espera el backend:
+ * - si `base64` arranca con 'http' → es una imagen ya existente → {url, publicId}
+ * - si no → es una imagen nueva subida por el usuario → {base64}
+ */
+export function toApiImage(img: {
+  base64?: string;
+  mimetype: string;
+  id?: string;
+}): ProductImagePayload {
+  if (img.base64?.startsWith('http')) {
+    return {
+      url: img.base64,
+      publicId: img.id ?? '',
+      mimetype: img.mimetype,
+    };
+  }
+  return { base64: img.base64 ?? '', mimetype: img.mimetype };
 }
