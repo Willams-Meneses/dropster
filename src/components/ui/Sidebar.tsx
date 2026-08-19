@@ -191,7 +191,7 @@ const Sidebar = () => {
         <Button
           variant="outlined"
           fullWidth
-          onClick={() => void navigate('/dashboard/mi-cuenta')}
+          onClick={() => void navigate('/dashboard/my-profile')}
           sx={{ mt: 2, borderRadius: '100px', fontSize: '13px', py: 0.75 }}
         >
           Mi cuenta
