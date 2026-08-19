@@ -13,5 +13,7 @@ export const routesConfig: Record<string, RouteConfig> = {
   '/dashboard/my-listings': { title: 'Mis Publicaciones', showSearch: false },
   '/dashboard/resumen': { title: 'Resumen', showSearch: false },
   '/dashboard/mis-ventas': { title: 'Mis ventas', showSearch: false },
-  '/dashboard/mi-cuenta': { title: 'Mi cuenta', showSearch: false },
+  '/dashboard/my-profile': { title: 'Mi cuenta', showSearch: false },
+  '/dashboard/my-profile/personal-data': { title: '', showSearch: false, showBackButton: true },
+  '/dashboard/my-profile/dispatch-address': { title: '', showSearch: false, showBackButton: true },
 };
