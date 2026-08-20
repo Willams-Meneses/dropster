@@ -10,7 +10,7 @@ interface VariantRowsProps {
   variants: ListingVariant[];
   /** Muestra los botones de acción solo en la primera fila */
   hasIndividualActions?: boolean;
-  onCopy?: () => void;
+  onEdit?: () => void;
   onDelete?: () => void;
 }
 
@@ -22,7 +22,7 @@ interface VariantRowsProps {
 export const VariantRows: React.FC<VariantRowsProps> = ({
   variants,
   hasIndividualActions = false,
-  onCopy,
+  onEdit,
   onDelete,
 }) => (
   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -50,7 +50,7 @@ export const VariantRows: React.FC<VariantRowsProps> = ({
 
         <RowActions
           visible={idx === 0 && hasIndividualActions}
-          onCopy={onCopy}
+          onEdit={onEdit}
           onDelete={onDelete}
         />
       </Box>

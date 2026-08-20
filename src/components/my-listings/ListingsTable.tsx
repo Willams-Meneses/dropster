@@ -40,7 +40,7 @@ const LISTING_STATUS_CHIP: Record<ListingStatus, StatusChipConfig> = {
 // ── Column definitions ───────────────────────────────────────────────────────
 
 function buildColumns(
-  onCopy?: (id: string) => void,
+  onEdit?: (id: string) => void,
   onDelete?: (id: string) => void,
 ): ColumnDef<Listing>[] {
   return [
@@ -72,7 +72,7 @@ function buildColumns(
         <VariantRows
           variants={row.variants}
           hasIndividualActions
-          onCopy={() => onCopy?.(row.id)}
+          onEdit={() => onEdit?.(row.id)}
           onDelete={() => onDelete?.(row.id)}
         />
       ),
@@ -87,7 +87,7 @@ interface ListingsTableProps {
   selectedIds: Set<string>;
   onSelectRow: (id: string, checked: boolean) => void;
   onSelectAll: (checked: boolean) => void;
-  onCopy?: (id: string) => void;
+  onEdit?: (id: string) => void;
   onDelete?: (id: string) => void;
   bulkActions?: React.ReactNode;
 }
@@ -97,11 +97,11 @@ export const ListingsTable: React.FC<ListingsTableProps> = ({
   selectedIds,
   onSelectRow,
   onSelectAll,
-  onCopy,
+  onEdit,
   onDelete,
   bulkActions,
 }) => {
-  const columns = buildColumns(onCopy, onDelete);
+  const columns = buildColumns(onEdit, onDelete);
 
   return (
     <DataTable

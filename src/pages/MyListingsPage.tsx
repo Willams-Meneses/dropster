@@ -20,6 +20,7 @@ import type { ListingStatus } from '@/types/listings.type';
 import { usePublicationsStore } from '@/store/table.store';
 import { DEFAULT_SORT_OPTIONS, EMPTY_FILTER_OPTIONS } from '@/store/tableOptions.store';
 import { ListingsTable } from '@/components/my-listings/ListingsTable';
+import { useNavigate } from 'react-router';
 
 // ── Tab config ───────────────────────────────────────────────────────────────
 
@@ -38,6 +39,7 @@ const MyListingsPage: React.FC = () => {
   const USE_MOCK = false;
 
   const { listings: apiListings, isLoading: apiLoading, error: apiError, refetch } = useListings();
+  const navigate = useNavigate();
 
   const listings = USE_MOCK ? [] : apiListings;
   const isLoading = USE_MOCK ? false : apiLoading;
@@ -118,9 +120,8 @@ const MyListingsPage: React.FC = () => {
     }
   };
 
-  const handleCopy = (id: string) => {
-    console.log('Duplicar listing:', id);
-    // TODO: llamar service + refetch
+  const handleEdit = (id: string) => {
+    navigate(`/dashboard/my-listings/edit/${id}`)
   };
 
   const handleDelete = (id: string) => {
@@ -188,7 +189,7 @@ const MyListingsPage: React.FC = () => {
         selectedIds={selectedIds}
         onSelectRow={handleSelectRow}
         onSelectAll={handleSelectAll}
-        onCopy={handleCopy}
+        onEdit={handleEdit}
         onDelete={handleDelete}
       />
     </Box>
