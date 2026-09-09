@@ -7,11 +7,11 @@ import { addressSchema, type AddressFormValues } from '@/schemas/address.schema'
 import { profileService } from '@/services/profile.service';
 import { useAuthStore } from '@/store/auth.store';
 
-interface UseDispatchAddressProps {
+interface useBusinessAddressProps {
   defaultValues: AddressFormValues;
 }
 
-export const useDispatchAddress = ({ defaultValues }: UseDispatchAddressProps) => {
+export const useBusinessAddress = ({ defaultValues }: useBusinessAddressProps) => {
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const setUser = useAuthStore((s) => s.setUser);
@@ -23,18 +23,18 @@ export const useDispatchAddress = ({ defaultValues }: UseDispatchAddressProps) =
     defaultValues,
   });
 
-  const onSubmit = form.handleSubmit(async (values) => {    
+  const onSubmit = form.handleSubmit(async (values) => {
     try {
       const data = await profileService.updateAddress(values);
-      
+
       setUser({
         ...currentUser!,
         ...data.user,
       });
 
-      enqueueSnackbar('Dirección de despacho guardada correctamente', { variant: 'success' });
-      navigate('/dashboard/my-profile'); 
-      
+      enqueueSnackbar('Dirección guardada correctamente', { variant: 'success' });
+      navigate('/dashboard/my-profile');
+
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         enqueueSnackbar('Ocurrió un error al guardar la dirección.', { variant: 'error' });
@@ -44,9 +44,9 @@ export const useDispatchAddress = ({ defaultValues }: UseDispatchAddressProps) =
     }
   });
 
-  return { 
-    form, 
-    onSubmit, 
+  return {
+    form,
+    onSubmit,
     isSubmitting: form.formState.isSubmitting,
     isValid: form.formState.isValid,
   };

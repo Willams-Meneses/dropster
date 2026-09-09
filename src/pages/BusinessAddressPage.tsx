@@ -2,23 +2,30 @@ import React from 'react';
 import { Box, Grid, TextField, Typography, Button } from '@mui/material';
 import { Controller } from 'react-hook-form';
 import { PageHeader } from '@/components/ui/PageHeader';
-import { useDispatchAddress } from '@/hooks/useDispatchAddress';
 import { useAuthStore } from '@/store/auth.store';
 import type { User } from '@/types/auth.types';
 import { LoadingScreen } from '@/components/ui/LoadingScreen';
+import { useBusinessAddress } from '@/hooks/useBusinessAddress';
 
-const DispatchAddressPage: React.FC = () => {
+const BusinessAddressPage: React.FC = () => {
   const user = useAuthStore((s) => s.user);
 
   if (!user) {
     return <LoadingScreen message="Cargando datos del usuario..." />;
   }
 
-  return <DispatchAddressForm user={user} />;
+  const isProvider = user.role === 'PROVIDER';
+  const title = isProvider ? 'Dirección de despacho' : 'Dirección de recepción';
+  const description = isProvider 
+    ? 'Declará la dirección desde donde despachás tus productos.' 
+    : 'Declará la dirección de tu local o depósito donde querés recibir la mercadería que compres para revender.';
+
+  return <BusinessAddressForm user={user} title={title} description={description} />;
 };
 
-const DispatchAddressForm: React.FC<{ user: User }> = ({ user }) => {
-  const { form, onSubmit, isSubmitting, isValid } = useDispatchAddress({
+// Le pasamos el title y description como props al componente del formulario
+const BusinessAddressForm: React.FC<{ user: User; title: string; description: string }> = ({ user, title, description }) => {
+  const { form, onSubmit, isSubmitting, isValid } = useBusinessAddress({
     defaultValues: {
       street: user.street || '',
       height: user.height || '',
@@ -36,8 +43,8 @@ const DispatchAddressForm: React.FC<{ user: User }> = ({ user }) => {
   return (
     <Box>
       <PageHeader
-        title="Dirección de despacho"
-        description="Declará la dirección desde donde despachás tus productos."
+        title={title}
+        description={description}
       />
 
       <Box
@@ -133,9 +140,6 @@ const DispatchAddressForm: React.FC<{ user: User }> = ({ user }) => {
                     helperText={errors.province?.message}
                     slotProps={{ select: { native: true } }}
                   >
-                    {/* <option value="">Provincia</option>
-                    <option value="Buenos Aires">Buenos Aires</option>
-                    <option value="CABA">CABA</option> */}
                     <option value="">Provincia</option>
                     <option value="Buenos Aires">Buenos Aires</option>
                     <option value="CABA">CABA</option>
@@ -219,4 +223,4 @@ const DispatchAddressForm: React.FC<{ user: User }> = ({ user }) => {
   );
 };
 
-export default DispatchAddressPage;
+export default BusinessAddressPage;

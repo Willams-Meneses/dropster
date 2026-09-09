@@ -12,15 +12,21 @@ interface ProfileMenuListProps {
 }
 
 // El "!" naranja indica sección incompleta. Chequeo simple de presencia de los
-// campos que pide cada pantalla — ajustar si alguno de estos campos pasa a ser
-// realmente opcional para el negocio.
+// campos que pide cada pantalla.
 const isPersonalInfoIncomplete = (user: User): boolean => !user.dni || !user.phone;
 
-const isDispatchAddressIncomplete = (user: User): boolean =>
+const isAddressIncomplete = (user: User): boolean =>
   !user.street || !user.height || !user.city || !user.province || !user.postalCode;
 
 export const ProfileMenuList: React.FC<ProfileMenuListProps> = ({ user, onNavigate }) => {
   const isProvider = user.role === 'PROVIDER';
+
+  // Textos y rutas dinámicas según el rol del usuario
+  const addressTitle = isProvider ? 'Dirección de despacho' : 'Dirección de recepción';
+  const addressDescription = isProvider 
+    ? 'Dirección declarada para el despacho de tus productos.' 
+    : 'Dirección de tu local para recibir la mercadería que compres para revender.';
+  const addressRoute = '/dashboard/my-profile/business-address'; // Usamos la ruta neutra
 
   return (
     <Box
@@ -35,20 +41,18 @@ export const ProfileMenuList: React.FC<ProfileMenuListProps> = ({ user, onNaviga
         title="Información personal"
         description="Datos referentes a tu persona ya sea física o jurídica."
         showWarning={isPersonalInfoIncomplete(user)}
-        showDivider={isProvider}
+        showDivider={true}
         onClick={() => onNavigate('/dashboard/my-profile/personal-data')}
       />
 
-      {isProvider && (
-        <ProfileMenuItem
-          icon={<WarehouseOutlinedIcon fontSize="small" />}
-          title="Dirección de despacho"
-          description="Dirección declarada para el despacho de productos."
-          showWarning={isDispatchAddressIncomplete(user)}
-          showDivider={false}
-          onClick={() => onNavigate('/dashboard/my-profile/dispatch-address')}
-        />
-      )}
+      <ProfileMenuItem
+        icon={<WarehouseOutlinedIcon fontSize="small" />}
+        title={addressTitle}
+        description={addressDescription}
+        showWarning={isAddressIncomplete(user)}
+        showDivider={false}
+        onClick={() => onNavigate(addressRoute)}
+      />
     </Box>
   );
 };

@@ -21,8 +21,8 @@ import OrderDetailPage from './pages/OrderDetailPage';
 import { PaymentStatusPage } from './pages/PaymentStatusPage';
 import SaleDetailPage from './pages/SaleDetailPage';
 import PersonalInfoPage from './pages/PersonalInfoPage';
-import MyProfilePage from './pages/MyProfilePage';
-import DispatchAddressPage from './pages/DispatchAddressPage';
+import MyProfilePage from './pages/MyProfilePage'
+import BusinessAddressPage from './pages/BusinessAddressPage';
 
 // Rutas públicas que no necesitan token
 const PUBLIC_ROUTES = ['/login', '/register', '/forgot-password'];
@@ -85,7 +85,8 @@ function App() {
             <Route path='my-sales/:id' element={<SaleDetailPage />} />
             <Route path='my-profile' element={<MyProfilePage />} />
             <Route path='my-profile/personal-data' element={<PersonalInfoPage />} />
-            <Route path='my-profile/dispatch-address' element={<DispatchAddressPage />} />
+            <Route path='my-profile/dispatch-address' element={<BusinessAddressPage />} />
+            <Route path="my-profile/business-address" element={<BusinessAddressPage />} />
           </Route>
         </Route>
 
