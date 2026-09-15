@@ -7,12 +7,13 @@ export interface CartItem {
   productName: string;
   variant: ProductVariant; // Contiene values, images, price, etc.
   quantity: number;
+  isBuyStock?: boolean;
 }
 
 interface CartStore {
   items: CartItem[];
   // Actions
-  addItem: (variant: ProductVariant, productId: string, productName: string) => void;
+  addItem: (variant: ProductVariant, productId: string, productName: string, isBuyStock?: boolean) => void;
   updateQuantity: (variantId: string, quantity: number) => void;
   removeItem: (variantId: string) => void;
   clearCart: () => void;
@@ -31,26 +32,30 @@ interface CartStore {
 export const useCartStore = create<CartStore>((set, get) => ({
   items: [],
 
-  addItem: (variant, productId, productName) => {
+  addItem: (variant, productId, productName, isBuyStock = false) => {
     const currentItems = get().items;
-    const existingItem = currentItems.find(item => item.variantId === variant.id);
+    
+    const hasDifferentType = currentItems.length > 0 && currentItems[0].isBuyStock !== isBuyStock;
+    const baseItems = hasDifferentType ? [] : currentItems;
+
+    const existingItem = baseItems.find(item => item.variantId === variant.id);
 
     if (existingItem) {
-      // Si ya existe, limitamos al stock disponible
       const newQuantity = Math.min(existingItem.quantity + 1, variant.stock);
       set({
-        items: currentItems.map(item =>
+        items: baseItems.map(item =>
           item.variantId === variant.id ? { ...item, quantity: newQuantity } : item
         )
       });
     } else {
       set({
-        items: [...currentItems, {
+        items: [...baseItems, {
           variantId: variant.id,
           productId,
           productName,
           variant,
-          quantity: 1
+          quantity: 1,
+          isBuyStock
         }]
       });
     }

@@ -1,17 +1,34 @@
-import { Box, Grid, Typography, TextField } from '@mui/material';
+import { Box, Grid, Typography, TextField, Button, Alert } from '@mui/material';
 import { Controller, type Control, type FieldErrors } from 'react-hook-form';
 import type { CheckoutFormValues } from '@/schemas/checkout.schema';
 
 interface CheckoutFormProps {
   control: Control<CheckoutFormValues>;
   errors: FieldErrors<CheckoutFormValues>;
+  isBuyStock?: boolean;
+  onClearAddress?: () => void;
 }
 
-export const CheckoutForm = ({ control, errors }: CheckoutFormProps) => {
+export const CheckoutForm = ({ control, errors, isBuyStock, onClearAddress }: CheckoutFormProps) => {
   return (
     <Box>
       <Typography variant="h3" sx={{ mb: 2 }}>Datos de envío</Typography>
 
+      {isBuyStock && (
+        <Alert severity="info" sx={{ mb: 3 }} variant="outlined">
+          <Typography variant="caption" sx={{ display: 'block', fontWeight: 600, mb: 0.5 }}>
+            Dirección de recepción de mercadería
+          </Typography>
+          Esta dirección se usará para enviarte el stock que vas a revender en Tiendanube. El stock quedará reservado y listo para publicar una vez que lo recibas.
+          {onClearAddress && (
+            <Box sx={{ mt: 1 }}>
+              <Button size="small" onClick={onClearAddress} sx={{ p: 0, minWidth: 'auto', textTransform: 'none', fontWeight: 'bold' }}>
+                Usar otra dirección
+              </Button>
+            </Box>
+          )}
+        </Alert>
+      )}
       <Typography variant="subtitle1" sx={{ mb: 1.5, color: 'text.primary' }}>¿Quién recibe?</Typography>
       <Grid container spacing={1.5} sx={{ mb: 2 }}>
         <Grid size={{ xs: 6 }}>

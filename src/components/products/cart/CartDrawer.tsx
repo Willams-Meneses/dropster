@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Typography, Button, Divider, Grid, IconButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useForm } from 'react-hook-form';
@@ -12,6 +12,7 @@ import { CheckoutForm } from './CheckoutForm';
 import { CartSummary } from './CartSummary';
 import { SuccessModal } from './SuccessModal';
 import { LoadingScreen } from '@/components/ui/LoadingScreen';
+import { useAuthStore } from '@/store/auth.store';
 
 interface CartDrawerProps {
   open: boolean;
@@ -31,7 +32,9 @@ export const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
   const totalItems = useCartTotalItems();
   const totalPrice = useCartTotalPrice();
   const { createOrder, isLoading, success, setSuccess } = useCreateOrder();
+  const user = useAuthStore((s) => s.user);
 
+  const isBuyStockMode = items.length > 0 && items[0].isBuyStock === true;
   const [step, setStep] = useState<CartStep>('cart');
   const [orderNumber, setOrderNumber] = useState<string>('');
 
@@ -47,6 +50,23 @@ export const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
     defaultValues: emptyFormValues,
   });
 
+  useEffect(() => {
+    if (open && isBuyStockMode && user) {
+      reset({
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        dni: user.dni || '',
+        phone: user.phone || '',
+        street: user.street || '',
+        height: user.height || '',
+        province: user.province || '',
+        city: user.city || '',
+        postalCode: user.postalCode || '',
+        country: user.country || 'Argentina',
+      });
+    }
+  }, [open, isBuyStockMode, user, reset]);
+  
   const postalCode = watch('postalCode');
 
   const handleGoToCheckout = () => {
@@ -59,6 +79,10 @@ export const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
   const handleCreateOrder = handleSubmit(async (values) => {
     await createOrder(values);
   });
+
+  const handleClearAddress = () => {
+    reset(emptyFormValues);
+  };
 
   const handleClose = () => {
     setStep('cart');
@@ -158,7 +182,8 @@ export const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
                 size={{ xs: 12, md: 6 }}
                 sx={{ height: '100%', minHeight: 0, overflowY: 'auto' }}
               >
-                <CheckoutForm control={control} errors={errors} />
+                <CheckoutForm control={control} errors={errors} isBuyStock={isBuyStockMode}
+                  onClearAddress={handleClearAddress}/>
               </Grid>
 
               <Grid

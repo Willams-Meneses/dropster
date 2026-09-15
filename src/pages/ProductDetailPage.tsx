@@ -1,6 +1,6 @@
-import { Box, Grid, Typography, CircularProgress } from '@mui/material';
+import { Box, Grid, Typography, CircularProgress, Alert, AlertTitle } from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { useProductDetail } from '@/hooks/useProductDetail';
 import { ProductInfo } from '@/components/products/product-detail/ProductInfo';
 import { ImageGallery } from '@/components/products/product-detail/ImageGallery';
@@ -18,6 +18,9 @@ export const ProductDetailPage = () => {
 };
 
 const ProductDetailContent = () => {
+  const [searchParams] = useSearchParams();
+  const isBuyStock = searchParams.get('buyStock') === 'true';
+
   const {
     product,
     isLoading,
@@ -39,7 +42,8 @@ const ProductDetailContent = () => {
   // Handler para agregar al carrito
   const handleAddToCart = () => {
     if (!selectedVariant || !product) return;
-    addItem(selectedVariant, product.id, product.name);
+    
+    addItem(selectedVariant, product.id, product.name, isBuyStock);
     enqueueSnackbar('✅ Producto agregado al carrito', { variant: 'success' });
   };
 
@@ -61,6 +65,14 @@ const ProductDetailContent = () => {
 
   return (
     <Box sx={{ maxWidth: 1200, mx: 'auto' }}>
+
+       {isBuyStock && (
+        <Alert severity="info" sx={{ width: '100%', mb: 3 }} variant="filled">
+          <AlertTitle>Compra de Stock para Tiendanube</AlertTitle>
+          Estás por comprar stock para revender. El producto se publicará automáticamente en tu Tiendanube después de que lo recibas en tu local. Si tenías otros productos en el carrito, se quitarán para evitar mezclar tipos de compra.
+        </Alert>
+      )}
+
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <BackButton />
         <Typography variant="button" sx={{ display: 'flex', alignItems: 'center', gap: 0.5, cursor: 'pointer' }}>
