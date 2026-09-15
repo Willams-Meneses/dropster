@@ -34,4 +34,13 @@ export const storeService = {
   updateSellPrice: async (dropshipperVariantId: string, sellPrice: string): Promise<void> => {
     await api.patch(`/store/variants/${dropshipperVariantId}/sell-price`, { sellPrice });
   },
+
+ publishProductManually: async (productId: string): Promise<void> => {
+    await api.post(`/store/products/${productId}/publish`);
+  },
+
+  // 🔧 NUEVO: Por si querés tener el botón de publicar todo en lote
+  publishReadyProducts: async (): Promise<void> => {
+    await api.post('/store/publish-ready');
+  },
 };

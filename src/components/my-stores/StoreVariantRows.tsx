@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, IconButton, Tooltip, Typography } from '@mui/material';
 import type { StoreListingVariant } from '@/types/store-listing.type';
 import { StockInput } from '@/components/ui/data-table/StockInput';
 import { PriceInput } from '@/components/ui/data-table/PriceInput';
 import { RowActions } from '@/components/ui/data-table/RowActions';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 
 interface StoreVariantRowsProps {
   variants: StoreListingVariant[];
+  productId: string;
   onRemove?: (tiendanubeProductId: string) => void;
   onSellPriceChange?: (dropshipperVariantId: string, newPrice: number) => void;
+  onPublish?: (productId: string) => void;
+  onBuyStock?: (productId: string) => void;
 }
 
 /**
@@ -25,8 +30,11 @@ interface StoreVariantRowsProps {
  */
 export const StoreVariantRows: React.FC<StoreVariantRowsProps> = ({
   variants,
+  productId,
   onRemove,
   onSellPriceChange,
+  onPublish,
+  onBuyStock,
 }) => {
   // Estado local por variante para el input de sellPrice antes de confirmar
   const [localPrices, setLocalPrices] = useState<Record<string, number>>(
@@ -72,10 +80,32 @@ export const StoreVariantRows: React.FC<StoreVariantRowsProps> = ({
             {variant.name}
           </Typography>
 
+          {/* Acciones */}
           {/* Eliminar — solo visible en la primera fila */}
           <RowActions
             visible={idx === 0}
             onDelete={() => onRemove?.(variant.tiendanubeProductId)}
+            extraActions={
+              <>
+                <Tooltip title="Comprar Stock para Tiendanube">
+                  <IconButton
+                    size="small"
+                    onClick={() => onBuyStock?.(productId)}
+                  >
+                    <ShoppingCartCheckoutIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Publicar producto en Tiendanube">
+                  <IconButton
+                    size="small"
+                    onClick={() => onPublish?.(productId)}
+                  >
+                    <CloudUploadIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              </>
+
+            }
           />
         </Box>
       ))}

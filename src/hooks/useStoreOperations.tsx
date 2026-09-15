@@ -22,6 +22,7 @@ export const useStoreOperations = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRemoving, setIsRemoving] = useState(false);
   const [isUpdatingPrice, setIsUpdatingPrice] = useState(false);
+   const [isPublishing, setIsPublishing] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
   const handleApiError = (
@@ -50,11 +51,11 @@ export const useStoreOperations = () => {
     setIsLoading(true);
     try {
       await storeService.addProductToStore(productId);
-      enqueueSnackbar('✅ Producto agregado a tu tienda', { variant: 'success' });
+      enqueueSnackbar('✅ Producto agregado a Mis tiendas', { variant: 'success' });
     } catch (err: unknown) {
       const status = getHttpStatus(err);
       if (status === 400) {
-        enqueueSnackbar('El producto ya está en tu tienda', { variant: 'warning' });
+        enqueueSnackbar('El producto ya está en Mis tiendas', { variant: 'warning' });
       } else {
         handleApiError(err, 'agregar el producto');
       }
@@ -101,12 +102,28 @@ export const useStoreOperations = () => {
     }
   };
 
+  const publishProduct = async (id: string): Promise<void> => {
+    setIsPublishing(true);
+    try {
+      await storeService.publishProductManually(id);
+      enqueueSnackbar('✅ Producto publicado en Tiendanube', { variant: 'success' });
+    } catch (err: unknown) {
+      handleApiError(err, 'publicar el producto', {
+        400: 'No tenés stock disponible. Comprá y recibí el stock primero.',
+      });
+    } finally {
+      setIsPublishing(false);
+    }
+  };
+
   return {
     addProduct,
     removeProduct,
     updateSellPrice,
+    publishProduct,
     isLoading,
     isRemoving,
     isUpdatingPrice,
+    isPublishing,
   };
 };

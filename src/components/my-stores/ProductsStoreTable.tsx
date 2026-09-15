@@ -10,6 +10,8 @@ import { StoreVariantRows } from './StoreVariantRows';
 function buildColumns(
   onRemove?: (tiendanubeProductId: string) => void,
   onSellPriceChange?: (dropshipperVariantId: string, newPrice: number) => void,
+  onPublish?: (productId: string) => void, // 👈 FALTABA ESTO
+  onBuyStock?: (productId: string) => void,
 ): ColumnDef<StoreListing>[] {
   return [
     {
@@ -40,8 +42,11 @@ function buildColumns(
       render: (row) => (
         <StoreVariantRows
           variants={row.variants}
+          productId={row.productId}
           onRemove={onRemove}
           onSellPriceChange={onSellPriceChange}
+          onPublish={onPublish}
+          onBuyStock={onBuyStock}
         />
       ),
     },
@@ -54,14 +59,18 @@ interface ProductsStoreTableProps {
   rows: StoreListing[];
   onRemove?: (tiendanubeProductId: string) => void;
   onSellPriceChange?: (dropshipperVariantId: string, newPrice: number) => void;
+  onPublish?: (productId: string) => void;
+  onBuyStock?: (productId: string) => void;
 }
 
 export const ProductsStoreTable: React.FC<ProductsStoreTableProps> = ({
   rows,
   onRemove,
   onSellPriceChange,
+  onPublish, 
+  onBuyStock,
 }) => {
-  const columns = buildColumns(onRemove, onSellPriceChange);
+  const columns = buildColumns(onRemove, onSellPriceChange, onPublish, onBuyStock);
 
   return (
     <DataTable

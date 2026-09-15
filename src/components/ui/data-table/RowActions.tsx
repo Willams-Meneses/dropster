@@ -7,8 +7,10 @@ import { colors } from '@/theme/palette';
 interface RowActionsProps {
   onEdit?: () => void;
   onDelete?: () => void;
+  extraActions?: React.ReactNode;
   /** Cuando es false, los botones se renderizan pero son invisibles (mantiene el espacio en grid) */
   visible?: boolean;
+  
 }
 
 /**
@@ -16,8 +18,9 @@ interface RowActionsProps {
  * Acepta `visible` para ocultar sin desmontar (útil en grids donde
  * solo la primera fila de un grupo muestra las acciones).
  */
-export const RowActions: React.FC<RowActionsProps> = ({ onEdit, onDelete, visible = true }) => (
+export const RowActions: React.FC<RowActionsProps> = ({ onEdit, onDelete,extraActions, visible = true }) => (
   <Box sx={{ display: 'flex', gap: 0.5, visibility: visible ? 'visible' : 'hidden' }}>
+    {extraActions}
     {onEdit && (
       <Tooltip title="Editar">
         <IconButton size="small" onClick={onEdit}>

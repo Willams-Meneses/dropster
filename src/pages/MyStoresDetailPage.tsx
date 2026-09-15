@@ -12,6 +12,7 @@ import { useStoreProducts } from '@/hooks/useStoreProducts';
 import { useStoreOperations } from '@/hooks/useStoreOperations';
 import { DEFAULT_SORT_OPTIONS, EMPTY_FILTER_OPTIONS } from '@/store/tableOptions.store';
 import { ProductsStoreTable } from '@/components/my-stores/ProductsStoreTable';
+import { useNavigate } from 'react-router-dom';
 
 // ── Tab config ────────────────────────────────────────────────────────────────
 
@@ -29,9 +30,10 @@ const MyStoreDetailPage: React.FC = () => {
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('newest');
   const [filter, setFilter] = useState('');
+  const navigate = useNavigate();
 
   const { storeListings, isLoading, error, refetch } = useStoreProducts();
-  const { removeProduct, updateSellPrice } = useStoreOperations();
+  const { removeProduct, updateSellPrice, publishProduct } = useStoreOperations();
 
   // ── Filtering ─────────────────────────────────────────────────────────────
 
@@ -66,6 +68,12 @@ const MyStoreDetailPage: React.FC = () => {
   ) => {
     await updateSellPrice(dropshipperVariantId, newPrice);
   };
+
+  const handlePublish = async (productId: string) => {
+    await publishProduct(productId); // Usamos el productId que viene de la tabla
+    refetch();
+  };
+
 
   // ── Render ────────────────────────────────────────────────────────────────
 
@@ -114,6 +122,8 @@ const MyStoreDetailPage: React.FC = () => {
             rows={sortedListings}
             onRemove={(id) => { void handleRemove(id); }}
             onSellPriceChange={(id, price) => { void handleSellPriceChange(id, price); }}
+            onPublish={(prodId) => { void handlePublish(prodId); }}
+            onBuyStock={(prodId) => navigate(`/dashboard/products/${prodId}?buyStock=true`)}
           />
         </>
       )}
