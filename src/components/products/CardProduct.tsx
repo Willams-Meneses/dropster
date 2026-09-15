@@ -186,9 +186,10 @@ const CardProduct: React.FC<CardProductProps> = ({
         onClick={handleAddToStore}
         disabled={isLoading}
         sx={{
-          height: '40px'
+          height: '40px',
+          px:3
         }}>
-        {isLoading ? 'Agregando...' : 'Sumar a mi tienda'}
+        {isLoading ? 'Agregando...' : 'Agregar a Mis tiendas'}
       </Button>
     </Box>
   );
