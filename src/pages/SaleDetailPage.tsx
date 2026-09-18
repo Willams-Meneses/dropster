@@ -30,7 +30,7 @@ const SaleDetailPage: React.FC = () => {
   if (isLoading) return <LoadingScreen message="Cargando venta..." />;
   if (error || !sale) return <ErrorMessage message={error ?? 'Venta no encontrada.'} onRetry={refetch} />;
 
-  const canDispatch = sale.status === 'ready_to_dispatch';
+  const canDispatch = sale.status === 'paid';
 
   return (
     <Box sx={{ px: 0, mt: 3 }}>

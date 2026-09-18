@@ -5,7 +5,7 @@ import { ORDER_STATUS_CONFIG } from '@/config/order-status.config';
 
 const STATUS_MESSAGES: Record<OrderStatus, string> = {
   pending_payment: 'Al abonar tu pedido comenzará el proceso de envío.',
-  in_process: 'Tu pedido está siendo preparado y enviado por los proveedores.',
+  paid: 'Tu pedido está siendo preparado y enviado por los proveedores.',
   delivered: 'Tu pedido fue entregado exitosamente.',
   cancelled: 'Este pedido fue cancelado.',
   not_delivered: 'No se pudo entregar el pedido. Contactá al soporte.',

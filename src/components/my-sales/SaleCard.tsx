@@ -64,7 +64,7 @@ export const SaleCard: React.FC<SaleCardProps> = ({ sale, onView, onPrintLabel, 
         <Button variant="outlined" size="small" onClick={() => onView?.(sale.id)} sx={{ textTransform: 'none' }}>
           Ver detalle
         </Button>
-        {sale.status === 'ready_to_dispatch' && (
+        {sale.status === 'paid' && (
           <Button variant="contained" size="small" onClick={() => onPrintLabel?.(sale.id)} sx={{ textTransform: 'none' }}>
             Imprimir etiqueta
           </Button>

@@ -8,7 +8,7 @@ export const ORDER_STATUS_CONFIG: Record<OrderStatus, StatusChipConfig> = {
     backgroundColor: colors.status.warning,
     textColor: colors.white,
   },
-  in_process: {
+  paid: {
     label: 'En proceso',
     backgroundColor: '#FDE68A',
     textColor: '#92400E',
