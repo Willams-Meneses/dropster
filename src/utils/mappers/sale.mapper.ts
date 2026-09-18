@@ -2,17 +2,16 @@ import type { ApiSale, ApiSaleItem, Sale, SaleItem, SaleStatus } from '@/types/s
 import type { ApiSubOrderStatus } from '@/types/order.type';
 
 const SALE_STATUS_MAP: Record<ApiSubOrderStatus, SaleStatus> = {
-  pending_payment: 'ready_to_dispatch', // no debería aparecer en Sales (se filtra en el back), fallback seguro
-  paid: 'ready_to_dispatch',
-  shipped: 'in_process',
-  received: 'delivered',
-  completed: 'delivered',
+  pending_payment: 'paid', 
+  paid: 'paid',
+  shipped: 'shipped',
+  delivered: 'delivered',
   return_requested: 'return_requested',
   returned: 'returned',
   cancelled: 'cancelled',
 };
 
-const mapSaleStatus = (status: ApiSubOrderStatus): SaleStatus => SALE_STATUS_MAP[status];
+const mapSaleStatus = (status: ApiSubOrderStatus): SaleStatus => SALE_STATUS_MAP[status] ?? 'paid';
 
 const mapSaleItem = (item: ApiSaleItem): SaleItem => ({
   id: item.id,

@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 const STATUS_TAB_MAP: Record<string, OrderStatus | 'all'> = {
   all: 'all',
   pending_payment: 'pending_payment',
-  in_process: 'in_process',
+  paid: 'paid',
   delivered: 'delivered',
   cancelled: 'cancelled',
   not_delivered: 'not_delivered',
@@ -34,7 +34,7 @@ const OrdersPage: React.FC = () => {
   const tabs: TabItem[] = [
     { value: 'all', label: 'Todas', count: orders.length },
     { value: 'pending_payment', label: 'Pendiente de pago', count: countByStatus('pending_payment') },
-    { value: 'in_process', label: 'En proceso', count: countByStatus('in_process') },
+    { value: 'paid', label: 'En proceso', count: countByStatus('paid') },
     { value: 'delivered', label: 'Entregado', count: countByStatus('delivered') },
     { value: 'cancelled', label: 'Cancelado', count: countByStatus('cancelled') },
     { value: 'not_delivered', label: 'No entregado', count: countByStatus('not_delivered') },
@@ -84,7 +84,7 @@ const OrdersPage: React.FC = () => {
         {filteredOrders.length === 0 ? (
           <ErrorMessage message="No se encontraron órdenes para este filtro." onRetry={refetch} />
         ) : (
-          <OrdersTable rows={filteredOrders} onPay={handlePay} onView={handleView} payingOrderId={payingOrderId}  />
+          <OrdersTable rows={filteredOrders} onPay={handlePay} onView={handleView} payingOrderId={payingOrderId} />
         )}
       </Box>
     </Box>

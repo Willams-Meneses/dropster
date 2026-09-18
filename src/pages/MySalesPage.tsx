@@ -14,8 +14,8 @@ import { useNavigate } from 'react-router-dom';
 
 const STATUS_TAB_MAP: Record<string, SaleStatus | 'all'> = {
   all: 'all',
-  ready_to_dispatch: 'ready_to_dispatch',
-  in_process: 'in_process',
+  paid: 'paid',
+  shipped: 'shipped',
   delivered: 'delivered',
   return_requested: 'return_requested',
   returned: 'returned',
@@ -34,8 +34,8 @@ const MySalesPage: React.FC = () => {
 
   const tabs: TabItem[] = [
     { value: 'all', label: 'Todas', count: sales.length },
-    { value: 'ready_to_dispatch', label: 'Listo para despachar', count: countByStatus('ready_to_dispatch') },
-    { value: 'in_process', label: 'En proceso', count: countByStatus('in_process') },
+    { value: 'paid', label: 'Listo para despachar', count: countByStatus('paid') },
+    { value: 'shipped', label: 'En proceso', count: countByStatus('shipped') },
     { value: 'delivered', label: 'Entregado', count: countByStatus('delivered') },
     { value: 'return_requested', label: 'Devolución solicitada', count: countByStatus('return_requested') },
     { value: 'returned', label: 'Devuelto', count: countByStatus('returned') },

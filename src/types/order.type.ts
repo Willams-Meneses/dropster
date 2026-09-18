@@ -42,17 +42,15 @@ export interface ApiSubOrder {
 export type ApiOrderStatus =
   | 'pending_payment'
   | 'paid'
-  | 'cancelled'
-  | 'in_process'
   | 'delivered'
-  | 'not_delivered';
+  | 'not_delivered'
+  | 'cancelled';
 
 export type ApiSubOrderStatus =
   | 'pending_payment'
   | 'paid'
   | 'shipped'
-  | 'received'
-  | 'completed'
+  | 'delivered'
   | 'return_requested'
   | 'returned'
   | 'cancelled';
@@ -100,10 +98,10 @@ export interface CreateOrderPayload {
 
 export type OrderStatus =
   | 'pending_payment'
-  | 'in_process'
+  | 'paid'
   | 'delivered'
-  | 'cancelled'
-  | 'not_delivered';
+  | 'not_delivered'
+  | 'cancelled';
 
 export type ShipmentStatus = 'in_transit' | 'delivered' | 'pending' | 'cancelled';
 

@@ -1,6 +1,7 @@
 import type {
   ApiOrder,
   ApiOrderItem,
+  ApiOrderStatus,
   ApiSubOrder,
   ApiSubOrderStatus,
   Order,
@@ -10,15 +11,14 @@ import type {
   SubOrder,
 } from '@/types/order.type';
 
-const mapOrderStatus = (status: ApiOrder['status']): OrderStatus =>
-  status === 'paid' ? 'in_process' : status;
+const mapOrderStatus = (status: ApiOrderStatus): OrderStatus =>
+  status === 'paid' ? 'paid' : status;
 
 const SUB_ORDER_TO_SHIPMENT: Record<ApiSubOrderStatus, ShipmentStatus> = {
   pending_payment: 'pending',
   paid: 'pending',
   shipped: 'in_transit',
-  received: 'delivered',
-  completed: 'delivered',
+  delivered: 'delivered',
   return_requested: 'in_transit',
   returned: 'cancelled',
   cancelled: 'cancelled',

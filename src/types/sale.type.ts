@@ -43,8 +43,13 @@ export interface ApiSalesResponse {
 }
 
 // ─── UI ─────────────────────────────────────────────────────────────────
-
-export type SaleStatus = 'ready_to_dispatch' | 'in_process' | 'delivered' | 'return_requested' | 'returned' | 'cancelled';
+export type SaleStatus = 
+  | 'paid' 
+  | 'shipped' 
+  | 'delivered' 
+  | 'return_requested' 
+  | 'returned' 
+  | 'cancelled';
 
 export interface SaleItem {
   id: string;
