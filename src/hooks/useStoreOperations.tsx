@@ -25,6 +25,7 @@ export const useStoreOperations = () => {
    const [isPublishing, setIsPublishing] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
+  //TODO: tener en cuenta este manejo de mensajes de error para otros flujos
   const handleApiError = (
     err: unknown,
     action: string,
