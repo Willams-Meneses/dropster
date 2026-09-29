@@ -11,7 +11,9 @@ import AddStoreDrawer from '@/components/my-stores/AddStoreDrawer';
 const TN_APP_ID = import.meta.env.VITE_TIENDANUBE_CLIENT_ID as string;
 
 function buildTiendanubeAuthUrl(): string {
-  return `https://www.tiendanube.com/apps/${TN_APP_ID}/authorize`;
+  // Agregamos los scopes (permisos) necesarios para leer órdenes y crear webhooks
+  const scopes = 'read_products,write_products,read_orders,write_webhooks';
+  return `https://www.tiendanube.com/apps/${TN_APP_ID}/authorize?scope=${scopes}`;
 }
 
 const MyStoresPage = () => {
