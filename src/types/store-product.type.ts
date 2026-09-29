@@ -34,6 +34,7 @@ export interface StoreVariant {
   sellPrice: string;      // precio de venta real del dropshipper (varchar)
   stock: number;
   reservedStock: number;
+  publish: boolean;       
 }
 
 export interface StoreProductItem {

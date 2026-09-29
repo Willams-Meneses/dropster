@@ -8,6 +8,7 @@ export function mapStoreProductToStoreListing(item: StoreProductItem): StoreList
     variantId: v.variantId,
     tiendanubeProductId: v.tiendanubeProductId,
     tiendanubeVariantId: v.tiendanubeVariantId,
+    publish: v.publish,
     name: v.values.join(' / '),
     sku: v.sku,
     cost: parseFloat(v.cost),

@@ -8,6 +8,7 @@ export interface StoreListingVariant {
   variantId: string;
   tiendanubeProductId: string;
   tiendanubeVariantId: string;
+  publish: boolean;
   name: string;              // values.join(' / ')
   sku: string;
   cost: number;              // parseado de string

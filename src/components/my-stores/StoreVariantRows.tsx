@@ -6,6 +6,7 @@ import { PriceInput } from '@/components/ui/data-table/PriceInput';
 import { RowActions } from '@/components/ui/data-table/RowActions';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
+import { colors } from '@/theme/palette';
 
 interface StoreVariantRowsProps {
   variants: StoreListingVariant[];
@@ -50,65 +51,83 @@ export const StoreVariantRows: React.FC<StoreVariantRowsProps> = ({
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-      {variants.map((variant, idx) => (
-        <Box
-          key={variant.dropshipperVariantId}
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: '80px 120px 120px 1fr auto',
-            alignItems: 'center',
-            gap: 1,
-          }}
-        >
-          {/* Stock — del proveedor, read-only */}
-          <StockInput value={variant.stock} disabled />
+      {variants.map((variant, idx) => {
+        // Calculamos el estado de publicación de esta variante
+        const isProductPublished = variants.some(
+          (v) => Boolean(v.tiendanubeVariantId) && v.tiendanubeVariantId !== 'null' && v.tiendanubeVariantId !== ''
+        );
+        const canPublishProduct = !isProductPublished && variants.some((v) => v.publish === true && v.stock > 0);
 
-          {/* Precio de costo — del proveedor, read-only */}
-          <PriceInput value={variant.cost} disabled />
 
-          {/* Precio de venta — editable por el dropshipper */}
-          <PriceInput
-            value={localPrices[variant.dropshipperVariantId] ?? variant.sellPrice}
-            onChange={(val) =>
-              setLocalPrices((prev) => ({ ...prev, [variant.dropshipperVariantId]: val }))
-            }
-            onBlur={() => handlePriceBlur(variant)}
-          />
+        return (
+          <Box
+            key={variant.dropshipperVariantId}
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: '80px 120px 120px 1fr auto',
+              alignItems: 'center',
+              gap: 1,
+            }}
+          >
+            {/* Stock — del proveedor, read-only */}
+            <StockInput value={variant.stock} disabled />
 
-          {/* Nombre de la variante */}
-          <Typography variant="caption" noWrap>
-            {variant.name}
-          </Typography>
+            {/* Precio de costo — del proveedor, read-only */}
+            <PriceInput value={variant.cost} disabled />
 
-          {/* Acciones */}
-          {/* Eliminar — solo visible en la primera fila */}
-          <RowActions
-            visible={idx === 0}
-            onDelete={() => onRemove?.(variant.tiendanubeProductId)}
-            extraActions={
-              <>
-                <Tooltip title="Comprar Stock para Tiendanube">
-                  <IconButton
-                    size="small"
-                    onClick={() => onBuyStock?.(productId)}
-                  >
-                    <ShoppingCartCheckoutIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Publicar producto en Tiendanube">
-                  <IconButton
-                    size="small"
-                    onClick={() => onPublish?.(productId)}
-                  >
-                    <CloudUploadIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-              </>
+            {/* Precio de venta — editable por el dropshipper */}
+            <PriceInput
+              value={localPrices[variant.dropshipperVariantId] ?? variant.sellPrice}
+              onChange={(val) =>
+                setLocalPrices((prev) => ({ ...prev, [variant.dropshipperVariantId]: val }))
+              }
+              onBlur={() => handlePriceBlur(variant)}
+            />
 
-            }
-          />
-        </Box>
-      ))}
+            {/* Nombre de la variante + Label de Publicado */}
+            <Typography variant="caption" noWrap sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              {variant.name}
+              {/* Label verde si ya está publicado */}
+              {isProductPublished && (
+                <Box component="span" sx={{ px: 0.5, borderRadius: 0.5, bgcolor: 'success.main', color: 'white', fontSize: '0.6rem', fontWeight: 'bold', textTransform: 'uppercase' }}>
+                  Publicado
+                </Box>
+              )}
+            </Typography>
+
+            {/* Acciones */}
+            <RowActions
+              visible={idx === 0}
+              onDelete={() => onRemove?.(productId)}
+              extraActions={
+                <>
+                  <Tooltip title="Comprar Stock para Tiendanube">
+                    <IconButton
+                      size="small"
+                      onClick={() => onBuyStock?.(productId)}
+                    >
+                      <ShoppingCartCheckoutIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+
+                  <Tooltip title={isProductPublished ? "Producto ya publicado" : (canPublishProduct ? "Publicar en Tiendanube" : "Comprá y recibí el stock para publicar")}>
+                    <span>
+                      <IconButton
+                        size="small"
+                        onClick={() => onPublish?.(productId)}
+                        disabled={!canPublishProduct} // Se deshabilita si ya está publicado o si no hay stock recibido
+                        sx={{ color: canPublishProduct ? colors.brand.orangeLight : 'rgba(0, 0, 0, 0.26)' }}
+                      >
+                        <CloudUploadIcon fontSize="small" />
+                      </IconButton>
+                    </span>
+                  </Tooltip>
+                </>
+              }
+            />
+          </Box>
+        );
+      })}
     </Box>
   );
 };

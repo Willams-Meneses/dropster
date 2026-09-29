@@ -8,7 +8,7 @@ import { StoreVariantRows } from './StoreVariantRows';
 // ── Column definitions ────────────────────────────────────────────────────────
 
 function buildColumns(
-  onRemove?: (tiendanubeProductId: string) => void,
+  onRemove?: (productId: string) => void,
   onSellPriceChange?: (dropshipperVariantId: string, newPrice: number) => void,
   onPublish?: (productId: string) => void, // 👈 FALTABA ESTO
   onBuyStock?: (productId: string) => void,
@@ -33,7 +33,6 @@ function buildColumns(
         <Box sx={{ display: 'grid', gridTemplateColumns: '80px 120px 120px 1fr auto', gap: 1 }}>
           <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>Stock</Typography>
           <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>Costo</Typography>
-          {/* <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>Precio sugerido</Typography> */}
           <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>Precio de venta</Typography>
           <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>Variantes</Typography>
           <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>Acciones</Typography>
@@ -57,7 +56,7 @@ function buildColumns(
 
 interface ProductsStoreTableProps {
   rows: StoreListing[];
-  onRemove?: (tiendanubeProductId: string) => void;
+  onRemove?: (productId: string) => void;
   onSellPriceChange?: (dropshipperVariantId: string, newPrice: number) => void;
   onPublish?: (productId: string) => void;
   onBuyStock?: (productId: string) => void;
@@ -67,7 +66,7 @@ export const ProductsStoreTable: React.FC<ProductsStoreTableProps> = ({
   rows,
   onRemove,
   onSellPriceChange,
-  onPublish, 
+  onPublish,
   onBuyStock,
 }) => {
   const columns = buildColumns(onRemove, onSellPriceChange, onPublish, onBuyStock);
