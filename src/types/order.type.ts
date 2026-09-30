@@ -133,6 +133,7 @@ export interface Order {
   storeLogoUrl?: string;
   status: OrderStatus;
   total: number | string;
+  channel: string;
   subOrders: SubOrder[];
   customerName: string;
   customerEmail: string;

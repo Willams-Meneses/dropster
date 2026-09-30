@@ -48,7 +48,7 @@ export const mapApiOrderToOrder = (apiOrder: ApiOrder): Order => ({
   id: apiOrder.id,
   orderNumber: apiOrder.id.slice(0, 8),
   createdAt: apiOrder.createdAt,
-  storeName: apiOrder.customerName, 
+  storeName: apiOrder.customerName,
   customerName: apiOrder.customerName,
   customerEmail: apiOrder.customerEmail,
   customerAddress: apiOrder.customerAddress,
@@ -57,6 +57,7 @@ export const mapApiOrderToOrder = (apiOrder: ApiOrder): Order => ({
   customerProvincia: apiOrder.customerProvincia,
   status: mapOrderStatus(apiOrder.status),
   total: apiOrder.total,
+  channel: apiOrder.channel,
   subOrders: apiOrder.subOrders.map(mapSubOrder),
 });
 

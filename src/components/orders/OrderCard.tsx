@@ -58,7 +58,21 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order, onPay, onView, onMe
         }}
       >
         <Typography variant="subtitle1">Número de pedido: #{order.orderNumber}</Typography>
-        <StatusChip config={ORDER_STATUS_CONFIG[order.status]} />
+
+        {(() => {
+          if (order.channel === 'tiendanube' && order.status === 'paid') {
+            return (
+              <StatusChip
+                config={{
+                  label: 'Vendido en Tiendanube',
+                  backgroundColor: colors.green.main,
+                  textColor: colors.white
+                }}
+              />
+            );
+          }
+          return <StatusChip config={ORDER_STATUS_CONFIG[order.status]} />;
+        })()}
         <Box sx={{ flex: 1 }} />
         <Button variant="outlined" size="small" onClick={() => onView?.(order.id)} sx={{
           py: 0.5,
@@ -68,11 +82,11 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order, onPay, onView, onMe
         </Button>
         {order.status === 'pending_payment' && (
           <Button variant="contained" size="small" onClick={() => onPay?.(order.id)} loading={isPaying}
-            disabled={isPaying}  sx={{
-            py: 0.5,
-            px: 1.5,
-            width: '95px'
-          }}>
+            disabled={isPaying} sx={{
+              py: 0.5,
+              px: 1.5,
+              width: '95px'
+            }}>
             Pagar
           </Button>
         )}

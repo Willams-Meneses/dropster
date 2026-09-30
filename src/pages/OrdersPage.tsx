@@ -31,8 +31,11 @@ const OrdersPage: React.FC = () => {
   const countByStatus = (status: OrderStatus) =>
     orders.filter((o) => o.status === status).length;
 
+  const countTiendanube = orders.filter((o) => o.channel === 'tiendanube').length;
+
   const tabs: TabItem[] = [
     { value: 'all', label: 'Todas', count: orders.length },
+    { value: 'tiendanube', label: 'Tiendanube', count: countTiendanube },
     { value: 'pending_payment', label: 'Pendiente de pago', count: countByStatus('pending_payment') },
     { value: 'paid', label: 'En proceso', count: countByStatus('paid') },
     { value: 'delivered', label: 'Entregado', count: countByStatus('delivered') },
@@ -41,8 +44,12 @@ const OrdersPage: React.FC = () => {
   ];
 
   const filteredOrders = orders.filter((o) => {
-    const tabStatus = STATUS_TAB_MAP[activeTab];
-    if (tabStatus !== 'all' && o.status !== tabStatus) return false;
+    if (activeTab === 'tiendanube') {
+      if (o.channel !== 'tiendanube') return false;
+    } else {
+      const tabStatus = STATUS_TAB_MAP[activeTab];
+      if (tabStatus !== 'all' && o.status !== tabStatus) return false;
+    }
     if (search && !o.storeName.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
