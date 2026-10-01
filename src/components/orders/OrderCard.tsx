@@ -95,7 +95,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order, onPay, onView, onMe
       {/* Sub-órdenes por proveedor */}
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
         {order.subOrders.map((subOrder) => (
-          <ProviderShipmentBox key={subOrder.id} subOrder={subOrder} />
+          <ProviderShipmentBox key={subOrder.id} subOrder={subOrder} isTiendanube={order.channel === 'tiendanube'} />
         ))}
       </Box>
     </Box>
