@@ -141,7 +141,7 @@ export const ProviderShipmentBox: React.FC<ProviderShipmentBoxProps> = ({ subOrd
         overflow: 'hidden',
       }}
     >
-      {/* 🔧 FIX: Solo mostramos el header si NO es de Tiendanube */}
+      {/* Solo mostramos el header si NO es de Tiendanube */}
       {!isTiendanube && (
         <Box
           sx={{
