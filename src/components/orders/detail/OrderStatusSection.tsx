@@ -13,18 +13,23 @@ const STATUS_MESSAGES: Record<OrderStatus, string> = {
 
 interface OrderStatusSectionProps {
   status: OrderStatus;
+  isTiendanube?: boolean;
 }
 
-export const OrderStatusSection: React.FC<OrderStatusSectionProps> = ({ status }) => {
+export const OrderStatusSection: React.FC<OrderStatusSectionProps> = ({ status, isTiendanube }) => {
   const config = ORDER_STATUS_CONFIG[status];
-
+  
+  let message = STATUS_MESSAGES[status];
+  if (isTiendanube && status === 'paid') {
+    message = 'Esta venta fue realizada en tu tienda de Tiendanube y será despachada por vos.';
+  }
   return (
     <Box>
       <Typography variant="caption">Estado:</Typography>
       <Typography variant="h2" sx={{ mt: 0.5, mb: 1, textTransform: 'uppercase' }}>
-        {config?.label ?? status}
+        {isTiendanube && status === 'paid' ? 'Vendido en Tiendanube' : (config?.label ?? status)}
       </Typography>
-      <Typography variant="body1">{STATUS_MESSAGES[status]}</Typography>
+      <Typography variant="body1">{message}</Typography>
       <Divider sx={{ mt: 3 }} />
     </Box>
   );

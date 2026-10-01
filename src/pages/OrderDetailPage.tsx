@@ -36,6 +36,7 @@ const OrderDetailPage: React.FC = () => {
   if (error || !order) return <ErrorMessage message={error ?? 'Pedido no encontrado.'} onRetry={refetch} />;
 
   const isPendingPayment = order.status === 'pending_payment';
+  const isTiendanube = order.channel === 'tiendanube'; 
 
   const menuActions: ActionsMenuItem[] = [
     {
@@ -69,8 +70,8 @@ const OrderDetailPage: React.FC = () => {
       >
         {/* Left column */}
         <Box>
-          <OrderStatusSection status={order.status} />
-          <OrderDetailProducts subOrders={order.subOrders} />
+          <OrderStatusSection status={order.status} isTiendanube={isTiendanube}/>
+          <OrderDetailProducts subOrders={order.subOrders} isTiendanube={isTiendanube}/>
         </Box>
 
         {/* Right column */}
