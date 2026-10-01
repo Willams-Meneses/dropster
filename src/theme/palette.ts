@@ -9,6 +9,11 @@ export const colors = {
     light: '#80E27E',
     dark: '#357A38',
   },
+  blue: {
+    main: '#2196F3',
+    light: '#64B5F6',
+    dark: '#1976D2',
+  },
   neutral: {
     100: '#F5F5F5',
     200: '#EEEEEE',
