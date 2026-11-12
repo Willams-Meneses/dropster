@@ -36,8 +36,11 @@ const StockBadge: React.FC<StockBadgeProps> = ({ stock, variant }) => {
         top: 0,
         right: 0,
         backgroundColor: isFeatured ? '#5A34D8' : 'white',
-        borderRadius: '0 10px 0 10px',
-        borderTopRightRadius: 'inherit',
+        // Sin radio propio arriba a la derecha: el recorte redondeado del
+        // contenedor de la imagen (overflow: hidden) dibuja esa esquina.
+        // Si el badge lleva su propio radio encima del fondo blanco de la
+        // foto, el antialias deja una línea clara en la esquina.
+        borderRadius: '0 0 0 10px',
         px: 1.5,
         py: 0.75,
         zIndex: 100,
