@@ -36,10 +36,10 @@ const StockBadge: React.FC<StockBadgeProps> = ({ stock, variant }) => {
         top: 0,
         right: 0,
         backgroundColor: isFeatured ? '#5A34D8' : 'white',
-        // Sin radio propio arriba a la derecha: el recorte redondeado del
-        // contenedor de la imagen (overflow: hidden) dibuja esa esquina.
-        // Si el badge lleva su propio radio encima del fondo blanco de la
-        // foto, el antialias deja una línea clara en la esquina.
+        // Esquina superior derecha recta a propósito: el badge se dibuja por
+        // encima del contenedor recortado, así cubre por completo la esquina
+        // de la imagen y se funde con el fondo de la card sin dejar la línea
+        // clara que aparecía al recortarse junto con la foto.
         borderRadius: '0 0 0 10px',
         px: 1.5,
         py: 0.75,
@@ -76,36 +76,44 @@ const CardProduct: React.FC<CardProductProps> = ({
     addProduct(product.id);
   };
 
-  // Badge dentro de imageSection, posicionado relativo a la imagen
+  // El badge queda fuera del contenedor que recorta la imagen: si se recorta
+  // junto con la foto, el antialias de la esquina mezcla el púrpura del badge
+  // con el blanco de la imagen y deja esa línea clara. Al quedar por encima,
+  // el badge púrpura tapa la esquina por completo y se funde con la card.
   const imageSection = (
     <Box
       sx={{
         position: 'relative',
-        borderRadius: '10px',
-        overflow: 'hidden',
-        backgroundColor: 'white',
-        aspectRatio: '4/3',
         flexShrink: 0,
         zIndex: 1
       }}
     >
       <Box
-        component="img"
-        src={product.imageUrl}
-        alt={product.name}
         sx={{
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          display: 'block',
-          zIndex: 0,
-          position: "relative"
+          borderRadius: '10px',
+          overflow: 'hidden',
+          backgroundColor: 'white',
+          aspectRatio: '4/3',
         }}
-        onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
-          e.currentTarget.src =
-            'https://via.placeholder.com/400x300?text=Producto';
-        }}
-      />
+      >
+        <Box
+          component="img"
+          src={product.imageUrl}
+          alt={product.name}
+          sx={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            display: 'block',
+            zIndex: 0,
+            position: "relative"
+          }}
+          onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+            e.currentTarget.src =
+              'https://via.placeholder.com/400x300?text=Producto';
+          }}
+        />
+      </Box>
       <StockBadge stock={product.stock} variant={variant} />
     </Box>
   );
